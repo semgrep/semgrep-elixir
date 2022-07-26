@@ -2,25 +2,25 @@ File: semgrep-grammars/src/tree-sitter-elixir/LICENSE
 Git repo name: tree-sitter-elixir
 Latest commit in repo: de3ec57591aebf451e710fc9c984cf601258baf5
 Last change in file:
-  commit d7f4f08a8126567c26704069cf6427c36ffe7324
+  commit de3ec57591aebf451e710fc9c984cf601258baf5
   Author: Jonatan Kłosko <jonatanklosko@gmail.com>
-  Date:   Thu Sep 30 14:29:49 2021 +0200
+  Date:   Fri Oct 22 18:07:49 2021 +0200
   
-      Add license
+      Add issue template
 ---
 File: semgrep-grammars/src/tree-sitter-elixir/grammar.js
 Git repo name: tree-sitter-elixir
 Latest commit in repo: de3ec57591aebf451e710fc9c984cf601258baf5
 Last change in file:
-  commit 5d3f7edbc2abd364b4a5af97c003014606e13374
+  commit de3ec57591aebf451e710fc9c984cf601258baf5
   Author: Jonatan Kłosko <jonatanklosko@gmail.com>
-  Date:   Thu Oct 14 20:10:10 2021 +0200
+  Date:   Fri Oct 22 18:07:49 2021 +0200
   
-      Make hidden scanned tokens visible as regular literals (#10)
+      Add issue template
 ---
 File: semgrep-grammars/src/semgrep-elixir/grammar.js
 Git repo name: ocaml-tree-sitter-semgrep
-Latest commit in repo: c8372a92315773964ca25a30d2a537ba9701e85d
+Latest commit in repo: a047a1227d5465557f3122ba612094d843027a10
 Last change in file:
   commit 9bb02a662ba264a1c67815a3173b89da6e293ad0
   Author: Franklin Mosley <franklin@pagerduty.com>
