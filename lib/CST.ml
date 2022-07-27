@@ -87,6 +87,9 @@ type char = Token.t (* pattern \?(.|\\.) *)
 type quoted_content_i_curly = Token.t
 [@@deriving sexp_of]
 
+type semgrep_metavariable = Token.t
+[@@deriving sexp_of]
+
 type quoted_content_heredoc_double = Token.t
 [@@deriving sexp_of]
 
@@ -184,12 +187,6 @@ type quoted_bar = (
 )
 [@@deriving sexp_of]
 
-type identifier = [
-    `Pat_cf9c6c3 of pat_cf9c6c3
-  | `DOTDOTDOT of Token.t (* "..." *)
-]
-[@@deriving sexp_of]
-
 type quoted_curly = (
     Token.t (* "{" *)
   * [
@@ -199,6 +196,15 @@ type quoted_curly = (
       list (* zero or more *)
   * Token.t (* "}" *)
 )
+[@@deriving sexp_of]
+
+type identifier = [
+    `Choice_pat_cf9c6c3 of [
+        `Pat_cf9c6c3 of pat_cf9c6c3
+      | `DOTDOTDOT of Token.t (* "..." *)
+    ]
+  | `Semg_meta of semgrep_metavariable (*tok*)
+]
 [@@deriving sexp_of]
 
 type quoted_heredoc_double = (
@@ -672,6 +678,9 @@ and expression = [
       * (terminator * stab_clause) list (* zero or more *)
       * Token.t (* "end" *)
     )
+  | `Deep_ellips of (
+        Token.t (* "<..." *) * expression * Token.t (* "...>" *)
+    )
 ]
 
 and interpolation = (Token.t (* "#{" *) * expression * Token.t (* "}" *))
@@ -1003,6 +1012,11 @@ type block (* inlined *) = (
   * terminator option
   * anon_choice_choice_stab_clause_rep_term_choice_stab_clause_b295119 option
   * Token.t (* ")" *)
+)
+[@@deriving sexp_of]
+
+type deep_ellipsis (* inlined *) = (
+    Token.t (* "<..." *) * expression * Token.t (* "...>" *)
 )
 [@@deriving sexp_of]
 

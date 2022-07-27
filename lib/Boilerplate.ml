@@ -98,6 +98,9 @@ let map_char (env : env) (tok : CST.char) =
 let map_quoted_content_i_curly (env : env) (tok : CST.quoted_content_i_curly) =
   (* quoted_content_i_curly *) token env tok
 
+let map_semgrep_metavariable (env : env) (tok : CST.semgrep_metavariable) =
+  (* semgrep_metavariable *) token env tok
+
 let map_quoted_content_heredoc_double (env : env) (tok : CST.quoted_content_heredoc_double) =
   (* quoted_content_heredoc_double *) token env tok
 
@@ -211,12 +214,6 @@ let map_quoted_bar (env : env) ((v1, v2, v3) : CST.quoted_bar) =
   let v3 = (* "|" *) token env v3 in
   todo env (v1, v2, v3)
 
-let map_identifier (env : env) (x : CST.identifier) =
-  (match x with
-  | `Pat_cf9c6c3 x -> map_pat_cf9c6c3 env x
-  | `DOTDOTDOT tok -> (* "..." *) token env tok
-  )
-
 let map_quoted_curly (env : env) ((v1, v2, v3) : CST.quoted_curly) =
   let v1 = (* "{" *) token env v1 in
   let v2 =
@@ -230,6 +227,16 @@ let map_quoted_curly (env : env) ((v1, v2, v3) : CST.quoted_curly) =
   in
   let v3 = (* "}" *) token env v3 in
   todo env (v1, v2, v3)
+
+let map_identifier (env : env) (x : CST.identifier) =
+  (match x with
+  | `Choice_pat_cf9c6c3 x ->
+      (match x with
+      | `Pat_cf9c6c3 x -> map_pat_cf9c6c3 env x
+      | `DOTDOTDOT tok -> (* "..." *) token env tok
+      )
+  | `Semg_meta tok -> (* semgrep_metavariable *) token env tok
+  )
 
 let map_quoted_heredoc_double (env : env) ((v1, v2, v3) : CST.quoted_heredoc_double) =
   let v1 = (* "\"\"\"" *) token env v1 in
@@ -1007,6 +1014,11 @@ and map_expression (env : env) (x : CST.expression) =
       in
       let v5 = (* "end" *) token env v5 in
       todo env (v1, v2, v3, v4, v5)
+  | `Deep_ellips (v1, v2, v3) ->
+      let v1 = (* "<..." *) token env v1 in
+      let v2 = map_expression env v2 in
+      let v3 = (* "...>" *) token env v3 in
+      todo env (v1, v2, v3)
   )
 
 and map_interpolation (env : env) ((v1, v2, v3) : CST.interpolation) =

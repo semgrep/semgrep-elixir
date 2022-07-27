@@ -56,6 +56,7 @@ let children_regexps : (string * Run.exp option) list = [
   "pat_509ec78", None;
   "nil", None;
   "quoted_content_i_bar", None;
+  "semgrep_metavariable", None;
   "imm_tok_lpar", None;
   "imm_tok_pat_562b724", None;
   "quoted_content_double", None;
@@ -82,13 +83,6 @@ let children_regexps : (string * Run.exp option) list = [
   "quoted_content_i_slash", None;
   "atom_", None;
   "newline_before_do", None;
-  "identifier",
-  Some (
-    Alt [|
-      Token (Name "pat_cf9c6c3");
-      Token (Literal "...");
-    |];
-  );
   "terminator",
   Some (
     Alt [|
@@ -101,6 +95,16 @@ let children_regexps : (string * Run.exp option) list = [
       Repeat1 (
         Token (Name "pat_509ec78");
       );
+    |];
+  );
+  "identifier",
+  Some (
+    Alt [|
+      Alt [|
+        Token (Name "pat_cf9c6c3");
+        Token (Literal "...");
+      |];
+      Token (Name "semgrep_metavariable");
     |];
   );
   "operator_identifier",
@@ -752,6 +756,14 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Name "quoted_i_heredoc_single");
     |];
   );
+  "deep_ellipsis",
+  Some (
+    Seq [
+      Token (Literal "<...");
+      Token (Name "expression");
+      Token (Literal "...>");
+    ];
+  );
   "do_block",
   Some (
     Seq [
@@ -900,6 +912,7 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Name "call");
       Token (Name "access_call");
       Token (Name "anonymous_function");
+      Token (Name "deep_ellipsis");
     |];
   );
   "interpolation",
@@ -1615,6 +1628,11 @@ let trans_quoted_content_i_bar ((kind, body) : mt) : CST.quoted_content_i_bar =
   | Leaf v -> v
   | Children _ -> assert false
 
+let trans_semgrep_metavariable ((kind, body) : mt) : CST.semgrep_metavariable =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
 let trans_imm_tok_lpar ((kind, body) : mt) : CST.imm_tok_lpar =
   match body with
   | Leaf v -> v
@@ -1747,22 +1765,6 @@ let trans_newline_before_do ((kind, body) : mt) : CST.newline_before_do =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_identifier ((kind, body) : mt) : CST.identifier =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Pat_cf9c6c3 (
-            trans_pat_cf9c6c3 (Run.matcher_token v)
-          )
-      | Alt (1, v) ->
-          `DOTDOTDOT (
-            Run.trans_token (Run.matcher_token v)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
 let trans_terminator ((kind, body) : mt) : CST.terminator =
   match body with
   | Children v ->
@@ -1786,6 +1788,32 @@ let trans_terminator ((kind, body) : mt) : CST.terminator =
             Run.repeat1
               (fun v -> trans_pat_509ec78 (Run.matcher_token v))
               v
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
+let trans_identifier ((kind, body) : mt) : CST.identifier =
+  match body with
+  | Children v ->
+      (match v with
+      | Alt (0, v) ->
+          `Choice_pat_cf9c6c3 (
+            (match v with
+            | Alt (0, v) ->
+                `Pat_cf9c6c3 (
+                  trans_pat_cf9c6c3 (Run.matcher_token v)
+                )
+            | Alt (1, v) ->
+                `DOTDOTDOT (
+                  Run.trans_token (Run.matcher_token v)
+                )
+            | _ -> assert false
+            )
+          )
+      | Alt (1, v) ->
+          `Semg_meta (
+            trans_semgrep_metavariable (Run.matcher_token v)
           )
       | _ -> assert false
       )
@@ -3405,6 +3433,20 @@ and trans_charlist ((kind, body) : mt) : CST.charlist =
       )
   | Leaf _ -> assert false
 
+and trans_deep_ellipsis ((kind, body) : mt) : CST.deep_ellipsis =
+  match body with
+  | Children v ->
+      (match v with
+      | Seq [v0; v1; v2] ->
+          (
+            Run.trans_token (Run.matcher_token v0),
+            trans_expression (Run.matcher_token v1),
+            Run.trans_token (Run.matcher_token v2)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
 and trans_do_block ((kind, body) : mt) : CST.do_block =
   match body with
   | Children v ->
@@ -3784,6 +3826,10 @@ and trans_expression ((kind, body) : mt) : CST.expression =
       | Alt (21, v) ->
           `Anon_func (
             trans_anonymous_function (Run.matcher_token v)
+          )
+      | Alt (22, v) ->
+          `Deep_ellips (
+            trans_deep_ellipsis (Run.matcher_token v)
           )
       | _ -> assert false
       )

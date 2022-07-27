@@ -20,11 +20,16 @@ Last change in file:
 ---
 File: semgrep-grammars/src/semgrep-elixir/grammar.js
 Git repo name: ocaml-tree-sitter-semgrep
-Latest commit in repo: a047a1227d5465557f3122ba612094d843027a10
+Latest commit in repo: 3c7ad526669e0d07c03e8b8d298db495833dc480
 Last change in file:
-  commit 9bb02a662ba264a1c67815a3173b89da6e293ad0
-  Author: Franklin Mosley <franklin@pagerduty.com>
-  Date:   Mon Oct 25 18:48:02 2021 -0400
+  commit 3c7ad526669e0d07c03e8b8d298db495833dc480
+  Author: pad <pad@r2c.dev>
+  Date:   Wed Jul 27 11:44:45 2022 +0200
   
-      Initial commit adding the Elixir grammar for tree-sitter
+      Elixir: support metavar and deep ellisps for semgrep
+      
+      This will help https://github.com/returntocorp/semgrep/issues/3698
+      
+      test plan:
+      test corpus included
 ---
