@@ -9,131 +9,90 @@ open! Sexplib.Conv
 open Tree_sitter_run
 
 type keyword_ = Token.t
-[@@deriving sexp_of]
 
 type pat_509ec78 = Token.t (* pattern \r?\n *)
-[@@deriving sexp_of]
 
 type quoted_content_square = Token.t
-[@@deriving sexp_of]
 
 type before_unary_op = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_angle = Token.t
-[@@deriving sexp_of]
 
 type imm_tok_pat_562b724 = Token.t (* pattern [A-Z] *)
-[@@deriving sexp_of]
 
 type imm_tok_pat_5eb9c21 = Token.t (* pattern :\s *)
-[@@deriving sexp_of]
 
 type quoted_content_bar = Token.t
-[@@deriving sexp_of]
 
 type imm_tok_lpar = Token.t (* "(" *)
-[@@deriving sexp_of]
 
 type escape_sequence = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_i_square = Token.t
-[@@deriving sexp_of]
 
 type alias = Token.t
-[@@deriving sexp_of]
 
 type not_in = Token.t
-[@@deriving sexp_of]
 
 type atom_ = Token.t
-[@@deriving sexp_of]
 
 type imm_tok_pat_8f9e87e = Token.t (* pattern [a-zA-Z0-9]+ *)
-[@@deriving sexp_of]
 
 type newline_before_do = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_i_angle = Token.t
-[@@deriving sexp_of]
 
 type pat_cf9c6c3 =
   Token.t (* pattern [_\p{Ll}\p{Lm}\p{Lo}\p{Nl}\u1885\u1886\u2118\u212E\u309B\u309C][\p{ID_Continue}]*[?!]? *)
-[@@deriving sexp_of]
 
 type imm_tok_lbrack = Token.t (* "[" *)
-[@@deriving sexp_of]
 
 type float_ = Token.t
-[@@deriving sexp_of]
 
 type imm_tok_pat_0db2d54 = Token.t (* pattern [a-z] *)
-[@@deriving sexp_of]
 
 type quoted_content_curly = Token.t
-[@@deriving sexp_of]
 
 type integer = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_i_heredoc_double = Token.t
-[@@deriving sexp_of]
 
 type char = Token.t (* pattern \?(.|\\.) *)
-[@@deriving sexp_of]
 
 type quoted_content_i_curly = Token.t
-[@@deriving sexp_of]
 
 type semgrep_metavariable = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_heredoc_double = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_slash = Token.t
-[@@deriving sexp_of]
 
 type quoted_atom_start = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_single = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_i_slash = Token.t
-[@@deriving sexp_of]
 
 type boolean = [
     `True of Token.t (* "true" *)
   | `False of Token.t (* "false" *)
 ]
-[@@deriving sexp_of]
 
 type quoted_content_double = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_i_bar = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_i_heredoc_single = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_i_parenthesis = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_parenthesis = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_i_double = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_heredoc_single = Token.t
-[@@deriving sexp_of]
 
 type quoted_content_i_single = Token.t
-[@@deriving sexp_of]
 
 type anon_choice_PLUS_8019319 = [
     `PLUS of Token.t (* "+" *)
@@ -143,7 +102,6 @@ type anon_choice_PLUS_8019319 = [
   | `TILDETILDETILDE of Token.t (* "~~~" *)
   | `Not of Token.t (* "not" *)
 ]
-[@@deriving sexp_of]
 
 type terminator = [
     `Rep_pat_509ec78_SEMI of (
@@ -152,7 +110,6 @@ type terminator = [
     )
   | `Rep1_pat_509ec78 of pat_509ec78 list (* one or more *)
 ]
-[@@deriving sexp_of]
 
 type quoted_square = (
     Token.t (* "[" *)
@@ -163,7 +120,6 @@ type quoted_square = (
       list (* zero or more *)
   * Token.t (* "]" *)
 )
-[@@deriving sexp_of]
 
 type quoted_angle = (
     Token.t (* "<" *)
@@ -174,7 +130,6 @@ type quoted_angle = (
       list (* zero or more *)
   * Token.t (* ">" *)
 )
-[@@deriving sexp_of]
 
 type quoted_bar = (
     Token.t (* "|" *)
@@ -185,7 +140,6 @@ type quoted_bar = (
       list (* zero or more *)
   * Token.t (* "|" *)
 )
-[@@deriving sexp_of]
 
 type quoted_curly = (
     Token.t (* "{" *)
@@ -196,7 +150,6 @@ type quoted_curly = (
       list (* zero or more *)
   * Token.t (* "}" *)
 )
-[@@deriving sexp_of]
 
 type identifier = [
     `Choice_pat_cf9c6c3 of [
@@ -205,7 +158,6 @@ type identifier = [
     ]
   | `Semg_meta of semgrep_metavariable (*tok*)
 ]
-[@@deriving sexp_of]
 
 type quoted_heredoc_double = (
     Token.t (* "\"\"\"" *)
@@ -216,7 +168,6 @@ type quoted_heredoc_double = (
       list (* zero or more *)
   * Token.t (* "\"\"\"" *)
 )
-[@@deriving sexp_of]
 
 type quoted_slash = (
     Token.t (* "/" *)
@@ -227,7 +178,6 @@ type quoted_slash = (
       list (* zero or more *)
   * Token.t (* "/" *)
 )
-[@@deriving sexp_of]
 
 type quoted_single = (
     Token.t (* "'" *)
@@ -238,7 +188,6 @@ type quoted_single = (
       list (* zero or more *)
   * Token.t (* "'" *)
 )
-[@@deriving sexp_of]
 
 type quoted_double = (
     Token.t (* "\"" *)
@@ -249,7 +198,6 @@ type quoted_double = (
       list (* zero or more *)
   * Token.t (* "\"" *)
 )
-[@@deriving sexp_of]
 
 type quoted_parenthesis = (
     Token.t (* "(" *)
@@ -260,7 +208,6 @@ type quoted_parenthesis = (
       list (* zero or more *)
   * Token.t (* ")" *)
 )
-[@@deriving sexp_of]
 
 type quoted_heredoc_single = (
     Token.t (* "'''" *)
@@ -271,7 +218,6 @@ type quoted_heredoc_single = (
       list (* zero or more *)
   * Token.t (* "'''" *)
 )
-[@@deriving sexp_of]
 
 type operator_identifier = [
     `AMP of Token.t (* "&" *)
@@ -322,7 +268,6 @@ type operator_identifier = [
   | `DASHGT of Token.t (* "->" *)
   | `DOT of Token.t (* "." *)
 ]
-[@@deriving sexp_of]
 
 type after_block = (
     Token.t (* "after" *)
@@ -948,7 +893,6 @@ and unary_operator = [
       * integer (*tok*)
     )
 ]
-[@@deriving sexp_of]
 
 type source = (
     terminator option
@@ -959,37 +903,29 @@ type source = (
     )
       option
 )
-[@@deriving sexp_of]
 
 type newline_before_binary_operator (* inlined *) = Token.t
-[@@deriving sexp_of]
 
 type nil (* inlined *) = Token.t (* "nil" *)
-[@@deriving sexp_of]
 
 type comment (* inlined *) = Token.t
-[@@deriving sexp_of]
 
 type newline_before_comment (* inlined *) = Token.t
-[@@deriving sexp_of]
 
 type access_call (* inlined *) = (
     expression * imm_tok_lbrack (*tok*) * expression * Token.t (* "]" *)
 )
-[@@deriving sexp_of]
 
 type anon_choice_exp_rep_term_choice_exp_opt_term_9f0e638 (* inlined *) = (
     [ `Exp of expression ]
   * anon_term_choice_exp_996111b list (* zero or more *)
   * terminator option
 )
-[@@deriving sexp_of]
 
 type anon_choice_stab_clause_rep_term_choice_stab_clause_6293695 (* inlined *) = (
     [ `Stab_clause of stab_clause ]
   * anon_term_choice_stab_clause_70647b7 list (* zero or more *)
 )
-[@@deriving sexp_of]
 
 type anonymous_function (* inlined *) = (
     Token.t (* "fn" *)
@@ -998,14 +934,12 @@ type anonymous_function (* inlined *) = (
   * (terminator * stab_clause) list (* zero or more *)
   * Token.t (* "end" *)
 )
-[@@deriving sexp_of]
 
 type bitstring (* inlined *) = (
     Token.t (* "<<" *)
   * items_with_trailing_separator option
   * Token.t (* ">>" *)
 )
-[@@deriving sexp_of]
 
 type block (* inlined *) = (
     Token.t (* "(" *)
@@ -1013,12 +947,10 @@ type block (* inlined *) = (
   * anon_choice_choice_stab_clause_rep_term_choice_stab_clause_b295119 option
   * Token.t (* ")" *)
 )
-[@@deriving sexp_of]
 
 type deep_ellipsis (* inlined *) = (
     Token.t (* "<..." *) * expression * Token.t (* "...>" *)
 )
-[@@deriving sexp_of]
 
 type double_call (* inlined *) = (
     [
@@ -1029,23 +961,19 @@ type double_call (* inlined *) = (
   * call_arguments_with_parentheses
   * anon_opt_opt_nl_before_do_do_blk_3eff85f
 )
-[@@deriving sexp_of]
 
 type list_ (* inlined *) = (
     Token.t (* "[" *)
   * items_with_trailing_separator option
   * Token.t (* "]" *)
 )
-[@@deriving sexp_of]
 
 type local_call_just_do_block (* inlined *) = (identifier * do_block)
-[@@deriving sexp_of]
 
 type local_call_without_parentheses (* inlined *) = (
     identifier * call_arguments_without_parentheses
   * anon_opt_opt_nl_before_do_do_blk_3eff85f
 )
-[@@deriving sexp_of]
 
 type map (* inlined *) = (
     Token.t (* "%" *)
@@ -1054,24 +982,20 @@ type map (* inlined *) = (
   * items_with_trailing_separator option
   * Token.t (* "}" *)
 )
-[@@deriving sexp_of]
 
 type quoted_atom (* inlined *) = (
     quoted_atom_start (*tok*) * anon_choice_quoted_i_double_d7d5f65
 )
-[@@deriving sexp_of]
 
 type quoted_keyword (* inlined *) = (
     anon_choice_quoted_i_double_d7d5f65 * imm_tok_pat_5eb9c21
 )
-[@@deriving sexp_of]
 
 type remote_call_without_parentheses (* inlined *) = (
     remote_dot
   * call_arguments_without_parentheses option
   * anon_opt_opt_nl_before_do_do_blk_3eff85f
 )
-[@@deriving sexp_of]
 
 type sigil (* inlined *) = (
     Token.t (* "~" *)
@@ -1109,20 +1033,13 @@ type sigil (* inlined *) = (
     ]
   * imm_tok_pat_8f9e87e option
 )
-[@@deriving sexp_of]
 
 type stab_clause_arguments_with_parentheses_with_guard (* inlined *) = (
     stab_clause_arguments_with_parentheses * Token.t (* "when" *)
   * expression
 )
-[@@deriving sexp_of]
 
 type stab_clause_arguments_without_parentheses_with_guard (* inlined *) = (
     stab_clause_arguments_without_parentheses * Token.t (* "when" *)
   * expression
 )
-[@@deriving sexp_of]
-
-let dump_tree root =
-  sexp_of_source root
-  |> Print_sexp.to_stdout
