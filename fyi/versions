@@ -1,26 +1,26 @@
 File: semgrep-grammars/src/tree-sitter-elixir/LICENSE
 Git repo name: tree-sitter-elixir
-Latest commit in repo: de3ec57591aebf451e710fc9c984cf601258baf5
+Latest commit in repo: a2861e88a730287a60c11ea9299c033c7d076e30
 Last change in file:
-  commit d7f4f08a8126567c26704069cf6427c36ffe7324
-  Author: Jonatan Kłosko <jonatanklosko@gmail.com>
-  Date:   Thu Sep 30 14:29:49 2021 +0200
+  commit b20eaa75565243c50be5e35e253d8beb58f45d56
+  Author: the-mikedavis <the-mikedavis@users.noreply.github.com>
+  Date:   Sun Oct 16 19:20:07 2022 +0000
   
-      Add license
+      Generate parser
 ---
 File: semgrep-grammars/src/tree-sitter-elixir/grammar.js
 Git repo name: tree-sitter-elixir
-Latest commit in repo: de3ec57591aebf451e710fc9c984cf601258baf5
+Latest commit in repo: a2861e88a730287a60c11ea9299c033c7d076e30
 Last change in file:
-  commit 5d3f7edbc2abd364b4a5af97c003014606e13374
+  commit dcf9441c96cf300c21a279a8bc56f24f571ee007
   Author: Jonatan Kłosko <jonatanklosko@gmail.com>
-  Date:   Thu Oct 14 20:10:10 2021 +0200
+  Date:   Fri Jun 2 23:21:29 2023 +0200
   
-      Make hidden scanned tokens visible as regular literals (#10)
+      Support empty interpolation (#55)
 ---
 File: semgrep-grammars/src/semgrep-elixir/grammar.js
 Git repo name: ocaml-tree-sitter-semgrep
-Latest commit in repo: e3d08f10f24a29134d65ab519dcc04eec261047b
+Latest commit in repo: 688f96c9cf5c25bcc031316d8a04781d28fa9873
 Last change in file:
   commit 3c7ad526669e0d07c03e8b8d298db495833dc480
   Author: pad <pad@r2c.dev>
