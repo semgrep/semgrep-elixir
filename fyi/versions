@@ -1,26 +1,26 @@
 File: semgrep-grammars/src/tree-sitter-elixir/LICENSE
 Git repo name: tree-sitter-elixir
-Latest commit in repo: a2861e88a730287a60c11ea9299c033c7d076e30
+Latest commit in repo: de3ec57591aebf451e710fc9c984cf601258baf5
 Last change in file:
-  commit b20eaa75565243c50be5e35e253d8beb58f45d56
-  Author: the-mikedavis <the-mikedavis@users.noreply.github.com>
-  Date:   Sun Oct 16 19:20:07 2022 +0000
+  commit de3ec57591aebf451e710fc9c984cf601258baf5
+  Author: Jonatan Kłosko <jonatanklosko@gmail.com>
+  Date:   Fri Oct 22 18:07:49 2021 +0200
   
-      Generate parser
+      Add issue template
 ---
 File: semgrep-grammars/src/tree-sitter-elixir/grammar.js
 Git repo name: tree-sitter-elixir
-Latest commit in repo: a2861e88a730287a60c11ea9299c033c7d076e30
+Latest commit in repo: de3ec57591aebf451e710fc9c984cf601258baf5
 Last change in file:
-  commit dcf9441c96cf300c21a279a8bc56f24f571ee007
+  commit de3ec57591aebf451e710fc9c984cf601258baf5
   Author: Jonatan Kłosko <jonatanklosko@gmail.com>
-  Date:   Fri Jun 2 23:21:29 2023 +0200
+  Date:   Fri Oct 22 18:07:49 2021 +0200
   
-      Support empty interpolation (#55)
+      Add issue template
 ---
 File: semgrep-grammars/src/semgrep-elixir/grammar.js
 Git repo name: ocaml-tree-sitter-semgrep
-Latest commit in repo: 29f211760bc49e90ac0441d05958215993966dd5
+Latest commit in repo: 5c8e8e9688044bf3dc4dd073242e5e37e0772de2
 Last change in file:
   commit 3c7ad526669e0d07c03e8b8d298db495833dc480
   Author: pad <pad@r2c.dev>

@@ -10,23 +10,25 @@ open Tree_sitter_run
 
 type keyword_ = Token.t
 
-type quoted_content_square = Token.t
+type pat_509ec78 = Token.t (* pattern \r?\n *)
 
-type quoted_content_slash = Token.t
+type quoted_content_square = Token.t
 
 type before_unary_op = Token.t
 
-type imm_tok_pat_37640cd = Token.t (* pattern [A-Z]+ *)
+type quoted_content_angle = Token.t
+
+type imm_tok_pat_562b724 = Token.t (* pattern [A-Z] *)
 
 type imm_tok_pat_5eb9c21 = Token.t (* pattern :\s *)
 
-type quoted_content_angle = Token.t
+type quoted_content_bar = Token.t
 
 type imm_tok_lpar = Token.t (* "(" *)
 
 type escape_sequence = Token.t
 
-type quoted_content_i_slash = Token.t
+type quoted_content_i_square = Token.t
 
 type alias = Token.t
 
@@ -38,9 +40,10 @@ type imm_tok_pat_8f9e87e = Token.t (* pattern [a-zA-Z0-9]+ *)
 
 type newline_before_do = Token.t
 
-type quoted_content_heredoc_single = Token.t
+type quoted_content_i_angle = Token.t
 
-type pat_509ec78 = Token.t (* pattern \r?\n *)
+type pat_cf9c6c3 =
+  Token.t (* pattern [_\p{Ll}\p{Lm}\p{Lo}\p{Nl}\u1885\u1886\u2118\u212E\u309B\u309C][\p{ID_Continue}]*[?!]? *)
 
 type imm_tok_lbrack = Token.t (* "[" *)
 
@@ -48,51 +51,48 @@ type float_ = Token.t
 
 type imm_tok_pat_0db2d54 = Token.t (* pattern [a-z] *)
 
-type quoted_content_bar = Token.t
+type quoted_content_curly = Token.t
 
 type integer = Token.t
 
-type quoted_content_i_double = Token.t
-
-type semgrep_metavariable = Token.t
+type quoted_content_i_heredoc_double = Token.t
 
 type char = Token.t (* pattern \?(.|\\.) *)
 
-type pat_cf9c6c3 =
-  Token.t (* pattern [_\p{Ll}\p{Lm}\p{Lo}\p{Nl}\u1885\u1886\u2118\u212E\u309B\u309C][\p{ID_Continue}]*[?!]? *)
+type quoted_content_i_curly = Token.t
 
-type quoted_content_i_bar = Token.t
+type semgrep_metavariable = Token.t
 
-type quoted_content_double = Token.t
+type quoted_content_heredoc_double = Token.t
+
+type quoted_content_slash = Token.t
+
+type quoted_atom_start = Token.t
 
 type quoted_content_single = Token.t
 
-type quoted_content_parenthesis = Token.t
-
-type quoted_content_i_single = Token.t
+type quoted_content_i_slash = Token.t
 
 type boolean = [
     `True of Token.t (* "true" *)
   | `False of Token.t (* "false" *)
 ]
 
-type quoted_content_curly = Token.t
+type quoted_content_double = Token.t
 
-type quoted_content_i_angle = Token.t
-
-type quoted_content_i_heredoc_double = Token.t
+type quoted_content_i_bar = Token.t
 
 type quoted_content_i_heredoc_single = Token.t
 
-type quoted_content_i_square = Token.t
-
-type quoted_content_i_curly = Token.t
-
-type quoted_content_heredoc_double = Token.t
-
-type quoted_atom_start = Token.t
-
 type quoted_content_i_parenthesis = Token.t
+
+type quoted_content_parenthesis = Token.t
+
+type quoted_content_i_double = Token.t
+
+type quoted_content_heredoc_single = Token.t
+
+type quoted_content_i_single = Token.t
 
 type anon_choice_PLUS_8019319 = [
     `PLUS of Token.t (* "+" *)
@@ -103,38 +103,6 @@ type anon_choice_PLUS_8019319 = [
   | `Not of Token.t (* "not" *)
 ]
 
-type quoted_slash = (
-    Token.t (* "/" *)
-  * quoted_content_slash (*tok*) option
-  * (escape_sequence (*tok*) * quoted_content_slash (*tok*) option)
-      list (* zero or more *)
-  * Token.t (* "/" *)
-)
-
-type quoted_square = (
-    Token.t (* "[" *)
-  * quoted_content_square (*tok*) option
-  * (escape_sequence (*tok*) * quoted_content_square (*tok*) option)
-      list (* zero or more *)
-  * Token.t (* "]" *)
-)
-
-type quoted_angle = (
-    Token.t (* "<" *)
-  * quoted_content_angle (*tok*) option
-  * (escape_sequence (*tok*) * quoted_content_angle (*tok*) option)
-      list (* zero or more *)
-  * Token.t (* ">" *)
-)
-
-type quoted_heredoc_single = (
-    Token.t (* "'''" *)
-  * quoted_content_heredoc_single (*tok*) option
-  * (escape_sequence (*tok*) * quoted_content_heredoc_single (*tok*) option)
-      list (* zero or more *)
-  * Token.t (* "'''" *)
-)
-
 type terminator = [
     `Rep_pat_509ec78_SEMI of (
         pat_509ec78 list (* zero or more *)
@@ -143,12 +111,44 @@ type terminator = [
   | `Rep1_pat_509ec78 of pat_509ec78 list (* one or more *)
 ]
 
+type quoted_square = (
+    Token.t (* "[" *)
+  * [
+        `Quoted_content_square of quoted_content_square (*tok*)
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
+      list (* zero or more *)
+  * Token.t (* "]" *)
+)
+
+type quoted_angle = (
+    Token.t (* "<" *)
+  * [
+        `Quoted_content_angle of quoted_content_angle (*tok*)
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
+      list (* zero or more *)
+  * Token.t (* ">" *)
+)
+
 type quoted_bar = (
     Token.t (* "|" *)
-  * quoted_content_bar (*tok*) option
-  * (escape_sequence (*tok*) * quoted_content_bar (*tok*) option)
+  * [
+        `Quoted_content_bar of quoted_content_bar (*tok*)
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
   * Token.t (* "|" *)
+)
+
+type quoted_curly = (
+    Token.t (* "{" *)
+  * [
+        `Quoted_content_curl of quoted_content_curly (*tok*)
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
+      list (* zero or more *)
+  * Token.t (* "}" *)
 )
 
 type identifier = [
@@ -159,44 +159,64 @@ type identifier = [
   | `Semg_meta of semgrep_metavariable (*tok*)
 ]
 
-type quoted_double = (
-    Token.t (* "\"" *)
-  * quoted_content_double (*tok*) option
-  * (escape_sequence (*tok*) * quoted_content_double (*tok*) option)
+type quoted_heredoc_double = (
+    Token.t (* "\"\"\"" *)
+  * [
+        `Quoted_content_here_double of quoted_content_heredoc_double (*tok*)
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
-  * Token.t (* "\"" *)
+  * Token.t (* "\"\"\"" *)
+)
+
+type quoted_slash = (
+    Token.t (* "/" *)
+  * [
+        `Quoted_content_slash of quoted_content_slash (*tok*)
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
+      list (* zero or more *)
+  * Token.t (* "/" *)
 )
 
 type quoted_single = (
     Token.t (* "'" *)
-  * quoted_content_single (*tok*) option
-  * (escape_sequence (*tok*) * quoted_content_single (*tok*) option)
+  * [
+        `Quoted_content_single of quoted_content_single (*tok*)
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
   * Token.t (* "'" *)
 )
 
+type quoted_double = (
+    Token.t (* "\"" *)
+  * [
+        `Quoted_content_double of quoted_content_double (*tok*)
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
+      list (* zero or more *)
+  * Token.t (* "\"" *)
+)
+
 type quoted_parenthesis = (
     Token.t (* "(" *)
-  * quoted_content_parenthesis (*tok*) option
-  * (escape_sequence (*tok*) * quoted_content_parenthesis (*tok*) option)
+  * [
+        `Quoted_content_paren of quoted_content_parenthesis (*tok*)
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
   * Token.t (* ")" *)
 )
 
-type quoted_curly = (
-    Token.t (* "{" *)
-  * quoted_content_curly (*tok*) option
-  * (escape_sequence (*tok*) * quoted_content_curly (*tok*) option)
+type quoted_heredoc_single = (
+    Token.t (* "'''" *)
+  * [
+        `Quoted_content_here_single of quoted_content_heredoc_single (*tok*)
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
-  * Token.t (* "}" *)
-)
-
-type quoted_heredoc_double = (
-    Token.t (* "\"\"\"" *)
-  * quoted_content_heredoc_double (*tok*) option
-  * (escape_sequence (*tok*) * quoted_content_heredoc_double (*tok*) option)
-      list (* zero or more *)
-  * Token.t (* "\"\"\"" *)
+  * Token.t (* "'''" *)
 )
 
 type operator_identifier = [
@@ -240,6 +260,7 @@ type operator_identifier = [
   | `DASHDASH of Token.t (* "--" *)
   | `PLUSPLUSPLUS of Token.t (* "+++" *)
   | `DASHDASHDASH of Token.t (* "---" *)
+  | `DOTDOT of Token.t (* ".." *)
   | `LTGT of Token.t (* "<>" *)
   | `STAR of Token.t (* "*" *)
   | `SLASH of Token.t (* "/" *)
@@ -267,11 +288,6 @@ and anon_choice_choice_stab_clause_rep_term_choice_stab_clause_b295119 = [
 ]
 
 and anon_choice_exp_0094635 = [ `Exp of expression | `Keywos of keywords ]
-
-and anon_choice_interp_adb6f63 = [
-    `Interp of (Token.t (* "#{" *) * expression option * Token.t (* "}" *))
-  | `Esc_seq of escape_sequence (*tok*)
-]
 
 and anon_choice_quoted_i_double_d7d5f65 = [
     `Quoted_i_double of quoted_i_double
@@ -391,11 +407,11 @@ and binary_operator = [
           | `DASHDASH of Token.t (* "--" *)
           | `PLUSPLUSPLUS of Token.t (* "+++" *)
           | `DASHDASHDASH of Token.t (* "---" *)
+          | `DOTDOT of Token.t (* ".." *)
           | `LTGT of Token.t (* "<>" *)
         ]
       * expression
     )
-  | `Exp_DOTDOT_exp of (expression * Token.t (* ".." *) * expression)
   | `Exp_choice_PLUS_exp of (
         expression
       * [ `PLUS of Token.t (* "+" *) | `DASH of Token.t (* "-" *) ]
@@ -412,15 +428,12 @@ and binary_operator = [
     )
 ]
 
-and body = [
-    `Term of terminator
-  | `Opt_term_exp_rep_term_exp_opt_term of (
-        terminator option
-      * expression
-      * (terminator * expression) list (* zero or more *)
-      * terminator option
-    )
-]
+and body = (
+    terminator option
+  * expression
+  * (terminator * expression) list (* zero or more *)
+  * terminator option
+)
 
 and call = [
     `Call_with_parens_b98484c of call_without_parentheses
@@ -560,8 +573,8 @@ and expression = [
                   | `Quoted_i_slash of quoted_i_slash
                 ]
             )
-          | `Imm_tok_pat_37640cd_choice_quoted_double of (
-                imm_tok_pat_37640cd
+          | `Imm_tok_pat_562b724_choice_quoted_double of (
+                imm_tok_pat_562b724
               * [
                     `Quoted_double of quoted_double
                   | `Quoted_single of quoted_single
@@ -596,7 +609,6 @@ and expression = [
       * items_with_trailing_separator option
       * Token.t (* "}" *)
     )
-  | `Null_op of Token.t (* ".." *)
   | `Un_op of unary_operator
   | `Bin_op of binary_operator
   | `Dot of dot
@@ -615,6 +627,8 @@ and expression = [
         Token.t (* "<..." *) * expression * Token.t (* "...>" *)
     )
 ]
+
+and interpolation = (Token.t (* "#{" *) * expression * Token.t (* "}" *))
 
 and items_with_trailing_separator = [
     `Exp_rep_COMMA_exp_opt_COMMA of (
@@ -655,89 +669,112 @@ and pair = (keyword * expression)
 
 and quoted_i_angle = (
     Token.t (* "<" *)
-  * quoted_content_i_angle (*tok*) option
-  * (anon_choice_interp_adb6f63 * quoted_content_i_angle (*tok*) option)
+  * [
+        `Quoted_content_i_angle of quoted_content_i_angle (*tok*)
+      | `Interp of interpolation
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
   * Token.t (* ">" *)
 )
 
 and quoted_i_bar = (
     Token.t (* "|" *)
-  * quoted_content_i_bar (*tok*) option
-  * (anon_choice_interp_adb6f63 * quoted_content_i_bar (*tok*) option)
+  * [
+        `Quoted_content_i_bar of quoted_content_i_bar (*tok*)
+      | `Interp of interpolation
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
   * Token.t (* "|" *)
 )
 
 and quoted_i_curly = (
     Token.t (* "{" *)
-  * quoted_content_i_curly (*tok*) option
-  * (anon_choice_interp_adb6f63 * quoted_content_i_curly (*tok*) option)
+  * [
+        `Quoted_content_i_curl of quoted_content_i_curly (*tok*)
+      | `Interp of interpolation
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
   * Token.t (* "}" *)
 )
 
 and quoted_i_double = (
     Token.t (* "\"" *)
-  * quoted_content_i_double (*tok*) option
-  * (anon_choice_interp_adb6f63 * quoted_content_i_double (*tok*) option)
+  * [
+        `Quoted_content_i_double of quoted_content_i_double (*tok*)
+      | `Interp of interpolation
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
   * Token.t (* "\"" *)
 )
 
 and quoted_i_heredoc_double = (
     Token.t (* "\"\"\"" *)
-  * quoted_content_i_heredoc_double (*tok*) option
-  * (
-        anon_choice_interp_adb6f63
-      * quoted_content_i_heredoc_double (*tok*) option
-    )
+  * [
+        `Quoted_content_i_here_double of
+          quoted_content_i_heredoc_double (*tok*)
+      | `Interp of interpolation
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
   * Token.t (* "\"\"\"" *)
 )
 
 and quoted_i_heredoc_single = (
     Token.t (* "'''" *)
-  * quoted_content_i_heredoc_single (*tok*) option
-  * (
-        anon_choice_interp_adb6f63
-      * quoted_content_i_heredoc_single (*tok*) option
-    )
+  * [
+        `Quoted_content_i_here_single of
+          quoted_content_i_heredoc_single (*tok*)
+      | `Interp of interpolation
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
   * Token.t (* "'''" *)
 )
 
 and quoted_i_parenthesis = (
     Token.t (* "(" *)
-  * quoted_content_i_parenthesis (*tok*) option
-  * (
-        anon_choice_interp_adb6f63
-      * quoted_content_i_parenthesis (*tok*) option
-    )
+  * [
+        `Quoted_content_i_paren of quoted_content_i_parenthesis (*tok*)
+      | `Interp of interpolation
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
   * Token.t (* ")" *)
 )
 
 and quoted_i_single = (
     Token.t (* "'" *)
-  * quoted_content_i_single (*tok*) option
-  * (anon_choice_interp_adb6f63 * quoted_content_i_single (*tok*) option)
+  * [
+        `Quoted_content_i_single of quoted_content_i_single (*tok*)
+      | `Interp of interpolation
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
   * Token.t (* "'" *)
 )
 
 and quoted_i_slash = (
     Token.t (* "/" *)
-  * quoted_content_i_slash (*tok*) option
-  * (anon_choice_interp_adb6f63 * quoted_content_i_slash (*tok*) option)
+  * [
+        `Quoted_content_i_slash of quoted_content_i_slash (*tok*)
+      | `Interp of interpolation
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
   * Token.t (* "/" *)
 )
 
 and quoted_i_square = (
     Token.t (* "[" *)
-  * quoted_content_i_square (*tok*) option
-  * (anon_choice_interp_adb6f63 * quoted_content_i_square (*tok*) option)
+  * [
+        `Quoted_content_i_square of quoted_content_i_square (*tok*)
+      | `Interp of interpolation
+      | `Esc_seq of escape_sequence (*tok*)
+    ]
       list (* zero or more *)
   * Token.t (* "]" *)
 )
@@ -867,8 +904,6 @@ type source = (
       option
 )
 
-type nullary_operator (* inlined *) = Token.t (* ".." *)
-
 type newline_before_binary_operator (* inlined *) = Token.t
 
 type nil (* inlined *) = Token.t (* "nil" *)
@@ -927,12 +962,6 @@ type double_call (* inlined *) = (
   * anon_opt_opt_nl_before_do_do_blk_3eff85f
 )
 
-type interpolation (* inlined *) = (
-    Token.t (* "#{" *)
-  * expression option
-  * Token.t (* "}" *)
-)
-
 type list_ (* inlined *) = (
     Token.t (* "[" *)
   * items_with_trailing_separator option
@@ -986,8 +1015,8 @@ type sigil (* inlined *) = (
               | `Quoted_i_slash of quoted_i_slash
             ]
         )
-      | `Imm_tok_pat_37640cd_choice_quoted_double of (
-            imm_tok_pat_37640cd
+      | `Imm_tok_pat_562b724_choice_quoted_double of (
+            imm_tok_pat_562b724
           * [
                 `Quoted_double of quoted_double
               | `Quoted_single of quoted_single
