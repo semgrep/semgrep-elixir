@@ -1,5 +1,5 @@
 (library
-  (public_name tree-sitter-lang.elixir)
+  (public_name tree-sitter-lang-pro.elixir)
   (name tree_sitter_elixir)
   (libraries atdgen-runtime tree-sitter.run)
 
