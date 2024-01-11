@@ -665,7 +665,10 @@ and local_call_with_parentheses = (
   * anon_opt_opt_nl_before_do_do_blk_3eff85f
 )
 
-and pair = (keyword * expression)
+and pair = [
+    `Kw_exp of (keyword * expression)
+  | `DOTDOTDOT of Token.t (* "..." *)
+]
 
 and quoted_i_angle = (
     Token.t (* "<" *)

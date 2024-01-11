@@ -1054,10 +1054,13 @@ let children_regexps : (string * Run.exp option) list = [
   );
   "pair",
   Some (
-    Seq [
-      Token (Name "keyword");
-      Token (Name "expression");
-    ];
+    Alt [|
+      Seq [
+        Token (Name "keyword");
+        Token (Name "expression");
+      ];
+      Token (Literal "...");
+    |];
   );
   "quoted_atom",
   Some (
@@ -4111,10 +4114,20 @@ and trans_pair ((kind, body) : mt) : CST.pair =
   match body with
   | Children v ->
       (match v with
-      | Seq [v0; v1] ->
-          (
-            trans_keyword (Run.matcher_token v0),
-            trans_expression (Run.matcher_token v1)
+      | Alt (0, v) ->
+          `Kw_exp (
+            (match v with
+            | Seq [v0; v1] ->
+                (
+                  trans_keyword (Run.matcher_token v0),
+                  trans_expression (Run.matcher_token v1)
+                )
+            | _ -> assert false
+            )
+          )
+      | Alt (1, v) ->
+          `DOTDOTDOT (
+            Run.trans_token (Run.matcher_token v)
           )
       | _ -> assert false
       )

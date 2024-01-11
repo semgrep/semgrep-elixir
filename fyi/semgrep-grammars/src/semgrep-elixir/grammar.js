@@ -22,10 +22,10 @@ module.exports = grammar(base_grammar, {
       
     // Metavariables
     identifier: ($, previous) => {
-      return choice(
+	return prec(1, choice(
         previous,
         $._semgrep_metavariable
-      );
+	));
     },
 
     _semgrep_metavariable: $ => token(/\$[A-Z_][A-Z_0-9]*/),
@@ -43,5 +43,12 @@ module.exports = grammar(base_grammar, {
     deep_ellipsis: $ => seq(
             '<...', $._expression, '...>'
     ),
+
+      pair: ($, previous) => {
+	  return choice(
+	      previous,
+	      '...',
+	  );
+      },
   }
 });

@@ -1543,10 +1543,17 @@ and map_local_call_with_parentheses (env : env) ((v1, v2, v3) : CST.local_call_w
   in
   R.Tuple [v1; v2; v3]
 
-and map_pair (env : env) ((v1, v2) : CST.pair) =
-  let v1 = map_keyword env v1 in
-  let v2 = map_expression env v2 in
-  R.Tuple [v1; v2]
+and map_pair (env : env) (x : CST.pair) =
+  (match x with
+  | `Kw_exp (v1, v2) -> R.Case ("Kw_exp",
+      let v1 = map_keyword env v1 in
+      let v2 = map_expression env v2 in
+      R.Tuple [v1; v2]
+    )
+  | `DOTDOTDOT tok -> R.Case ("DOTDOTDOT",
+      (* "..." *) token env tok
+    )
+  )
 
 and map_quoted_i_angle (env : env) ((v1, v2, v3) : CST.quoted_i_angle) =
   let v1 = (* "<" *) token env v1 in

@@ -2,34 +2,17 @@ File: semgrep-grammars/src/tree-sitter-elixir/LICENSE
 Git repo name: tree-sitter-elixir
 Latest commit in repo: de3ec57591aebf451e710fc9c984cf601258baf5
 Last change in file:
-  commit de3ec57591aebf451e710fc9c984cf601258baf5
-  Author: Jonatan Kłosko <jonatanklosko@gmail.com>
-  Date:   Fri Oct 22 18:07:49 2021 +0200
-  
-      Add issue template
+  de3ec57591aebf451e710fc9c984cf601258baf5 Add issue template
 ---
 File: semgrep-grammars/src/tree-sitter-elixir/grammar.js
 Git repo name: tree-sitter-elixir
 Latest commit in repo: de3ec57591aebf451e710fc9c984cf601258baf5
 Last change in file:
-  commit de3ec57591aebf451e710fc9c984cf601258baf5
-  Author: Jonatan Kłosko <jonatanklosko@gmail.com>
-  Date:   Fri Oct 22 18:07:49 2021 +0200
-  
-      Add issue template
+  de3ec57591aebf451e710fc9c984cf601258baf5 Add issue template
 ---
 File: semgrep-grammars/src/semgrep-elixir/grammar.js
 Git repo name: ocaml-tree-sitter-semgrep
-Latest commit in repo: 5c8e8e9688044bf3dc4dd073242e5e37e0772de2
+Latest commit in repo: b4fea21630e960ca50bbf3735c2f0827fc305903
 Last change in file:
-  commit 3c7ad526669e0d07c03e8b8d298db495833dc480
-  Author: pad <pad@r2c.dev>
-  Date:   Wed Jul 27 11:44:45 2022 +0200
-  
-      Elixir: support metavar and deep ellisps for semgrep
-      
-      This will help https://github.com/returntocorp/semgrep/issues/3698
-      
-      test plan:
-      test corpus included
+  b4fea21630e960ca50bbf3735c2f0827fc305903 fix elixir ellipsis in function calls
 ---
