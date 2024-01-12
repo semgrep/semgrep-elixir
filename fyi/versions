@@ -12,7 +12,7 @@ Last change in file:
 ---
 File: semgrep-grammars/src/semgrep-elixir/grammar.js
 Git repo name: ocaml-tree-sitter-semgrep
-Latest commit in repo: b4fea21630e960ca50bbf3735c2f0827fc305903
+Latest commit in repo: c2c0ef69d467da99585292f3bf7fcc02d923ee78
 Last change in file:
-  b4fea21630e960ca50bbf3735c2f0827fc305903 fix elixir ellipsis in function calls
+  c2c0ef69d467da99585292f3bf7fcc02d923ee78 elixir allows ellipsis in keyword/pair positions
 ---
