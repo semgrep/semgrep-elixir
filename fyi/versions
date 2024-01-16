@@ -12,7 +12,7 @@ Last change in file:
 ---
 File: semgrep-grammars/src/semgrep-elixir/grammar.js
 Git repo name: ocaml-tree-sitter-semgrep
-Latest commit in repo: fdb2fd7674cc252b985d475a30bf2d6942f14139
+Latest commit in repo: f30b69f429de9efb12a4d0fb20ce4e7c09af9082
 Last change in file:
-  fdb2fd7674cc252b985d475a30bf2d6942f14139 elixir allows metavariables as keywords
+  f30b69f429de9efb12a4d0fb20ce4e7c09af9082 support atoms
 ---
