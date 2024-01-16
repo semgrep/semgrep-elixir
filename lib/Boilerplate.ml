@@ -22,17 +22,17 @@ let blank (env : env) () =
 let map_keyword_ (env : env) (tok : CST.keyword_) =
   (* keyword_ *) token env tok
 
-let map_pat_509ec78 (env : env) (tok : CST.pat_509ec78) =
-  (* pattern \r?\n *) token env tok
+let map_quoted_content_slash (env : env) (tok : CST.quoted_content_slash) =
+  (* quoted_content_slash *) token env tok
 
-let map_quoted_content_square (env : env) (tok : CST.quoted_content_square) =
-  (* quoted_content_square *) token env tok
+let map_quoted_content_single (env : env) (tok : CST.quoted_content_single) =
+  (* quoted_content_single *) token env tok
 
 let map_before_unary_op (env : env) (tok : CST.before_unary_op) =
   (* before_unary_op *) token env tok
 
-let map_quoted_content_angle (env : env) (tok : CST.quoted_content_angle) =
-  (* quoted_content_angle *) token env tok
+let map_quoted_atom_start (env : env) (tok : CST.quoted_atom_start) =
+  (* quoted_atom_start *) token env tok
 
 let map_imm_tok_pat_562b724 (env : env) (tok : CST.imm_tok_pat_562b724) =
   (* pattern [A-Z] *) token env tok
@@ -40,23 +40,17 @@ let map_imm_tok_pat_562b724 (env : env) (tok : CST.imm_tok_pat_562b724) =
 let map_imm_tok_pat_5eb9c21 (env : env) (tok : CST.imm_tok_pat_5eb9c21) =
   (* pattern :\s *) token env tok
 
-let map_quoted_content_bar (env : env) (tok : CST.quoted_content_bar) =
-  (* quoted_content_bar *) token env tok
-
 let map_imm_tok_lpar (env : env) (tok : CST.imm_tok_lpar) =
   (* "(" *) token env tok
 
 let map_escape_sequence (env : env) (tok : CST.escape_sequence) =
   (* escape_sequence *) token env tok
 
-let map_quoted_content_i_square (env : env) (tok : CST.quoted_content_i_square) =
-  (* quoted_content_i_square *) token env tok
+let map_quoted_content_i_single (env : env) (tok : CST.quoted_content_i_single) =
+  (* quoted_content_i_single *) token env tok
 
 let map_alias (env : env) (tok : CST.alias) =
   (* alias *) token env tok
-
-let map_not_in (env : env) (tok : CST.not_in) =
-  (* not_in *) token env tok
 
 let map_atom_ (env : env) (tok : CST.atom_) =
   (* atom_ *) token env tok
@@ -64,14 +58,14 @@ let map_atom_ (env : env) (tok : CST.atom_) =
 let map_imm_tok_pat_8f9e87e (env : env) (tok : CST.imm_tok_pat_8f9e87e) =
   (* pattern [a-zA-Z0-9]+ *) token env tok
 
-let map_newline_before_do (env : env) (tok : CST.newline_before_do) =
-  (* newline_before_do *) token env tok
+let map_not_in (env : env) (tok : CST.not_in) =
+  (* not_in *) token env tok
 
-let map_quoted_content_i_angle (env : env) (tok : CST.quoted_content_i_angle) =
-  (* quoted_content_i_angle *) token env tok
+let map_quoted_content_heredoc_double (env : env) (tok : CST.quoted_content_heredoc_double) =
+  (* quoted_content_heredoc_double *) token env tok
 
-let map_pat_cf9c6c3 (env : env) (tok : CST.pat_cf9c6c3) =
-  (* pattern [_\p{Ll}\p{Lm}\p{Lo}\p{Nl}\u1885\u1886\u2118\u212E\u309B\u309C][\p{ID_Continue}]*[?!]? *) token env tok
+let map_pat_509ec78 (env : env) (tok : CST.pat_509ec78) =
+  (* pattern \r?\n *) token env tok
 
 let map_imm_tok_lbrack (env : env) (tok : CST.imm_tok_lbrack) =
   (* "[" *) token env tok
@@ -82,38 +76,47 @@ let map_float_ (env : env) (tok : CST.float_) =
 let map_imm_tok_pat_0db2d54 (env : env) (tok : CST.imm_tok_pat_0db2d54) =
   (* pattern [a-z] *) token env tok
 
-let map_quoted_content_curly (env : env) (tok : CST.quoted_content_curly) =
-  (* quoted_content_curly *) token env tok
+let map_quoted_content_square (env : env) (tok : CST.quoted_content_square) =
+  (* quoted_content_square *) token env tok
+
+let map_quoted_content_angle (env : env) (tok : CST.quoted_content_angle) =
+  (* quoted_content_angle *) token env tok
 
 let map_integer (env : env) (tok : CST.integer) =
   (* integer *) token env tok
 
-let map_quoted_content_i_heredoc_double (env : env) (tok : CST.quoted_content_i_heredoc_double) =
-  (* quoted_content_i_heredoc_double *) token env tok
+let map_quoted_content_i_curly (env : env) (tok : CST.quoted_content_i_curly) =
+  (* quoted_content_i_curly *) token env tok
 
 let map_char (env : env) (tok : CST.char) =
   (* pattern \?(.|\\.) *) token env tok
 
-let map_quoted_content_i_curly (env : env) (tok : CST.quoted_content_i_curly) =
-  (* quoted_content_i_curly *) token env tok
+let map_pat_5eb9c21 (env : env) (tok : CST.pat_5eb9c21) =
+  (* pattern :\s *) token env tok
+
+let map_quoted_content_i_angle (env : env) (tok : CST.quoted_content_i_angle) =
+  (* quoted_content_i_angle *) token env tok
 
 let map_semgrep_metavariable (env : env) (tok : CST.semgrep_metavariable) =
   (* semgrep_metavariable *) token env tok
 
-let map_quoted_content_heredoc_double (env : env) (tok : CST.quoted_content_heredoc_double) =
-  (* quoted_content_heredoc_double *) token env tok
+let map_quoted_content_curly (env : env) (tok : CST.quoted_content_curly) =
+  (* quoted_content_curly *) token env tok
 
-let map_quoted_content_slash (env : env) (tok : CST.quoted_content_slash) =
-  (* quoted_content_slash *) token env tok
+let map_quoted_content_parenthesis (env : env) (tok : CST.quoted_content_parenthesis) =
+  (* quoted_content_parenthesis *) token env tok
 
-let map_quoted_atom_start (env : env) (tok : CST.quoted_atom_start) =
-  (* quoted_atom_start *) token env tok
+let map_newline_before_do (env : env) (tok : CST.newline_before_do) =
+  (* newline_before_do *) token env tok
 
-let map_quoted_content_single (env : env) (tok : CST.quoted_content_single) =
-  (* quoted_content_single *) token env tok
+let map_pat_cf9c6c3 (env : env) (tok : CST.pat_cf9c6c3) =
+  (* pattern [_\p{Ll}\p{Lm}\p{Lo}\p{Nl}\u1885\u1886\u2118\u212E\u309B\u309C][\p{ID_Continue}]*[?!]? *) token env tok
 
-let map_quoted_content_i_slash (env : env) (tok : CST.quoted_content_i_slash) =
-  (* quoted_content_i_slash *) token env tok
+let map_quoted_content_i_square (env : env) (tok : CST.quoted_content_i_square) =
+  (* quoted_content_i_square *) token env tok
+
+let map_quoted_content_i_parenthesis (env : env) (tok : CST.quoted_content_i_parenthesis) =
+  (* quoted_content_i_parenthesis *) token env tok
 
 let map_boolean (env : env) (x : CST.boolean) =
   (match x with
@@ -125,29 +128,29 @@ let map_boolean (env : env) (x : CST.boolean) =
     )
   )
 
-let map_quoted_content_double (env : env) (tok : CST.quoted_content_double) =
-  (* quoted_content_double *) token env tok
-
-let map_quoted_content_i_bar (env : env) (tok : CST.quoted_content_i_bar) =
-  (* quoted_content_i_bar *) token env tok
-
-let map_quoted_content_i_heredoc_single (env : env) (tok : CST.quoted_content_i_heredoc_single) =
-  (* quoted_content_i_heredoc_single *) token env tok
-
-let map_quoted_content_i_parenthesis (env : env) (tok : CST.quoted_content_i_parenthesis) =
-  (* quoted_content_i_parenthesis *) token env tok
-
-let map_quoted_content_parenthesis (env : env) (tok : CST.quoted_content_parenthesis) =
-  (* quoted_content_parenthesis *) token env tok
-
-let map_quoted_content_i_double (env : env) (tok : CST.quoted_content_i_double) =
-  (* quoted_content_i_double *) token env tok
+let map_quoted_content_bar (env : env) (tok : CST.quoted_content_bar) =
+  (* quoted_content_bar *) token env tok
 
 let map_quoted_content_heredoc_single (env : env) (tok : CST.quoted_content_heredoc_single) =
   (* quoted_content_heredoc_single *) token env tok
 
-let map_quoted_content_i_single (env : env) (tok : CST.quoted_content_i_single) =
-  (* quoted_content_i_single *) token env tok
+let map_quoted_content_i_double (env : env) (tok : CST.quoted_content_i_double) =
+  (* quoted_content_i_double *) token env tok
+
+let map_quoted_content_i_heredoc_double (env : env) (tok : CST.quoted_content_i_heredoc_double) =
+  (* quoted_content_i_heredoc_double *) token env tok
+
+let map_quoted_content_i_slash (env : env) (tok : CST.quoted_content_i_slash) =
+  (* quoted_content_i_slash *) token env tok
+
+let map_quoted_content_i_bar (env : env) (tok : CST.quoted_content_i_bar) =
+  (* quoted_content_i_bar *) token env tok
+
+let map_quoted_content_double (env : env) (tok : CST.quoted_content_double) =
+  (* quoted_content_double *) token env tok
+
+let map_quoted_content_i_heredoc_single (env : env) (tok : CST.quoted_content_i_heredoc_single) =
+  (* quoted_content_i_heredoc_single *) token env tok
 
 let map_anon_choice_PLUS_8019319 (env : env) (x : CST.anon_choice_PLUS_8019319) =
   (match x with
@@ -170,6 +173,57 @@ let map_anon_choice_PLUS_8019319 (env : env) (x : CST.anon_choice_PLUS_8019319) 
       (* "not" *) token env tok
     )
   )
+
+let map_quoted_single (env : env) ((v1, v2, v3) : CST.quoted_single) =
+  let v1 = (* "'" *) token env v1 in
+  let v2 =
+    R.List (List.map (fun x ->
+      (match x with
+      | `Quoted_content_single tok -> R.Case ("Quoted_content_single",
+          (* quoted_content_single *) token env tok
+        )
+      | `Esc_seq tok -> R.Case ("Esc_seq",
+          (* escape_sequence *) token env tok
+        )
+      )
+    ) v2)
+  in
+  let v3 = (* "'" *) token env v3 in
+  R.Tuple [v1; v2; v3]
+
+let map_quoted_slash (env : env) ((v1, v2, v3) : CST.quoted_slash) =
+  let v1 = (* "/" *) token env v1 in
+  let v2 =
+    R.List (List.map (fun x ->
+      (match x with
+      | `Quoted_content_slash tok -> R.Case ("Quoted_content_slash",
+          (* quoted_content_slash *) token env tok
+        )
+      | `Esc_seq tok -> R.Case ("Esc_seq",
+          (* escape_sequence *) token env tok
+        )
+      )
+    ) v2)
+  in
+  let v3 = (* "/" *) token env v3 in
+  R.Tuple [v1; v2; v3]
+
+let map_quoted_heredoc_double (env : env) ((v1, v2, v3) : CST.quoted_heredoc_double) =
+  let v1 = (* "\"\"\"" *) token env v1 in
+  let v2 =
+    R.List (List.map (fun x ->
+      (match x with
+      | `Quoted_content_here_double tok -> R.Case ("Quoted_content_here_double",
+          (* quoted_content_heredoc_double *) token env tok
+        )
+      | `Esc_seq tok -> R.Case ("Esc_seq",
+          (* escape_sequence *) token env tok
+        )
+      )
+    ) v2)
+  in
+  let v3 = (* "\"\"\"" *) token env v3 in
+  R.Tuple [v1; v2; v3]
 
 let map_terminator (env : env) (x : CST.terminator) =
   (match x with
@@ -223,23 +277,6 @@ let map_quoted_angle (env : env) ((v1, v2, v3) : CST.quoted_angle) =
   let v3 = (* ">" *) token env v3 in
   R.Tuple [v1; v2; v3]
 
-let map_quoted_bar (env : env) ((v1, v2, v3) : CST.quoted_bar) =
-  let v1 = (* "|" *) token env v1 in
-  let v2 =
-    R.List (List.map (fun x ->
-      (match x with
-      | `Quoted_content_bar tok -> R.Case ("Quoted_content_bar",
-          (* quoted_content_bar *) token env tok
-        )
-      | `Esc_seq tok -> R.Case ("Esc_seq",
-          (* escape_sequence *) token env tok
-        )
-      )
-    ) v2)
-  in
-  let v3 = (* "|" *) token env v3 in
-  R.Tuple [v1; v2; v3]
-
 let map_quoted_curly (env : env) ((v1, v2, v3) : CST.quoted_curly) =
   let v1 = (* "{" *) token env v1 in
   let v2 =
@@ -255,91 +292,6 @@ let map_quoted_curly (env : env) ((v1, v2, v3) : CST.quoted_curly) =
     ) v2)
   in
   let v3 = (* "}" *) token env v3 in
-  R.Tuple [v1; v2; v3]
-
-let map_identifier (env : env) (x : CST.identifier) =
-  (match x with
-  | `Choice_pat_cf9c6c3 x -> R.Case ("Choice_pat_cf9c6c3",
-      (match x with
-      | `Pat_cf9c6c3 x -> R.Case ("Pat_cf9c6c3",
-          map_pat_cf9c6c3 env x
-        )
-      | `DOTDOTDOT tok -> R.Case ("DOTDOTDOT",
-          (* "..." *) token env tok
-        )
-      )
-    )
-  | `Semg_meta tok -> R.Case ("Semg_meta",
-      (* semgrep_metavariable *) token env tok
-    )
-  )
-
-let map_quoted_heredoc_double (env : env) ((v1, v2, v3) : CST.quoted_heredoc_double) =
-  let v1 = (* "\"\"\"" *) token env v1 in
-  let v2 =
-    R.List (List.map (fun x ->
-      (match x with
-      | `Quoted_content_here_double tok -> R.Case ("Quoted_content_here_double",
-          (* quoted_content_heredoc_double *) token env tok
-        )
-      | `Esc_seq tok -> R.Case ("Esc_seq",
-          (* escape_sequence *) token env tok
-        )
-      )
-    ) v2)
-  in
-  let v3 = (* "\"\"\"" *) token env v3 in
-  R.Tuple [v1; v2; v3]
-
-let map_quoted_slash (env : env) ((v1, v2, v3) : CST.quoted_slash) =
-  let v1 = (* "/" *) token env v1 in
-  let v2 =
-    R.List (List.map (fun x ->
-      (match x with
-      | `Quoted_content_slash tok -> R.Case ("Quoted_content_slash",
-          (* quoted_content_slash *) token env tok
-        )
-      | `Esc_seq tok -> R.Case ("Esc_seq",
-          (* escape_sequence *) token env tok
-        )
-      )
-    ) v2)
-  in
-  let v3 = (* "/" *) token env v3 in
-  R.Tuple [v1; v2; v3]
-
-let map_quoted_single (env : env) ((v1, v2, v3) : CST.quoted_single) =
-  let v1 = (* "'" *) token env v1 in
-  let v2 =
-    R.List (List.map (fun x ->
-      (match x with
-      | `Quoted_content_single tok -> R.Case ("Quoted_content_single",
-          (* quoted_content_single *) token env tok
-        )
-      | `Esc_seq tok -> R.Case ("Esc_seq",
-          (* escape_sequence *) token env tok
-        )
-      )
-    ) v2)
-  in
-  let v3 = (* "'" *) token env v3 in
-  R.Tuple [v1; v2; v3]
-
-let map_quoted_double (env : env) ((v1, v2, v3) : CST.quoted_double) =
-  let v1 = (* "\"" *) token env v1 in
-  let v2 =
-    R.List (List.map (fun x ->
-      (match x with
-      | `Quoted_content_double tok -> R.Case ("Quoted_content_double",
-          (* quoted_content_double *) token env tok
-        )
-      | `Esc_seq tok -> R.Case ("Esc_seq",
-          (* escape_sequence *) token env tok
-        )
-      )
-    ) v2)
-  in
-  let v3 = (* "\"" *) token env v3 in
   R.Tuple [v1; v2; v3]
 
 let map_quoted_parenthesis (env : env) ((v1, v2, v3) : CST.quoted_parenthesis) =
@@ -359,6 +311,40 @@ let map_quoted_parenthesis (env : env) ((v1, v2, v3) : CST.quoted_parenthesis) =
   let v3 = (* ")" *) token env v3 in
   R.Tuple [v1; v2; v3]
 
+let map_identifier (env : env) (x : CST.identifier) =
+  (match x with
+  | `Choice_pat_cf9c6c3 x -> R.Case ("Choice_pat_cf9c6c3",
+      (match x with
+      | `Pat_cf9c6c3 x -> R.Case ("Pat_cf9c6c3",
+          map_pat_cf9c6c3 env x
+        )
+      | `DOTDOTDOT tok -> R.Case ("DOTDOTDOT",
+          (* "..." *) token env tok
+        )
+      )
+    )
+  | `Semg_meta tok -> R.Case ("Semg_meta",
+      (* semgrep_metavariable *) token env tok
+    )
+  )
+
+let map_quoted_bar (env : env) ((v1, v2, v3) : CST.quoted_bar) =
+  let v1 = (* "|" *) token env v1 in
+  let v2 =
+    R.List (List.map (fun x ->
+      (match x with
+      | `Quoted_content_bar tok -> R.Case ("Quoted_content_bar",
+          (* quoted_content_bar *) token env tok
+        )
+      | `Esc_seq tok -> R.Case ("Esc_seq",
+          (* escape_sequence *) token env tok
+        )
+      )
+    ) v2)
+  in
+  let v3 = (* "|" *) token env v3 in
+  R.Tuple [v1; v2; v3]
+
 let map_quoted_heredoc_single (env : env) ((v1, v2, v3) : CST.quoted_heredoc_single) =
   let v1 = (* "'''" *) token env v1 in
   let v2 =
@@ -374,6 +360,23 @@ let map_quoted_heredoc_single (env : env) ((v1, v2, v3) : CST.quoted_heredoc_sin
     ) v2)
   in
   let v3 = (* "'''" *) token env v3 in
+  R.Tuple [v1; v2; v3]
+
+let map_quoted_double (env : env) ((v1, v2, v3) : CST.quoted_double) =
+  let v1 = (* "\"" *) token env v1 in
+  let v2 =
+    R.List (List.map (fun x ->
+      (match x with
+      | `Quoted_content_double tok -> R.Case ("Quoted_content_double",
+          (* quoted_content_double *) token env tok
+        )
+      | `Esc_seq tok -> R.Case ("Esc_seq",
+          (* escape_sequence *) token env tok
+        )
+      )
+    ) v2)
+  in
+  let v3 = (* "\"" *) token env v3 in
   R.Tuple [v1; v2; v3]
 
 let map_operator_identifier (env : env) (x : CST.operator_identifier) =
@@ -1502,6 +1505,11 @@ and map_keyword (env : env) (x : CST.keyword) =
       let v2 = map_imm_tok_pat_5eb9c21 env v2 in
       R.Tuple [v1; v2]
     )
+  | `Meta_kw (v1, v2) -> R.Case ("Meta_kw",
+      let v1 = (* semgrep_metavariable *) token env v1 in
+      let v2 = map_pat_5eb9c21 env v2 in
+      R.Tuple [v1; v2]
+    )
   )
 
 and map_keywords (env : env) ((v1, v2) : CST.keywords) =
@@ -1550,7 +1558,7 @@ and map_pair (env : env) (x : CST.pair) =
       let v2 = map_expression env v2 in
       R.Tuple [v1; v2]
     )
-  | `DOTDOTDOT tok -> R.Case ("DOTDOTDOT",
+  | `Semg_ellips tok -> R.Case ("Semg_ellips",
       (* "..." *) token env tok
     )
   )

@@ -35,7 +35,9 @@ let extras = [
 ]
 
 let children_regexps : (string * Run.exp option) list = [
-  "pat_cf9c6c3", None;
+  "quoted_content_square", None;
+  "pat_509ec78", None;
+  "quoted_content_slash", None;
   "boolean",
   Some (
     Alt [|
@@ -43,46 +45,46 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "false");
     |];
   );
-  "quoted_content_bar", None;
   "imm_tok_pat_5eb9c21", None;
   "imm_tok_pat_8f9e87e", None;
-  "quoted_content_curly", None;
+  "quoted_content_angle", None;
   "imm_tok_pat_0db2d54", None;
   "float", None;
-  "quoted_content_parenthesis", None;
+  "quoted_content_i_slash", None;
   "alias", None;
+  "not_in", None;
   "before_unary_op", None;
   "integer", None;
-  "pat_509ec78", None;
-  "nil", None;
-  "quoted_content_i_bar", None;
-  "semgrep_metavariable", None;
+  "newline_before_do", None;
+  "quoted_content_heredoc_single", None;
+  "pat_5eb9c21", None;
   "imm_tok_lpar", None;
   "imm_tok_pat_562b724", None;
-  "quoted_content_double", None;
+  "quoted_content_bar", None;
   "keyword_", None;
-  "quoted_content_i_heredoc_single", None;
-  "quoted_atom_start", None;
   "quoted_content_i_double", None;
-  "quoted_content_heredoc_single", None;
-  "quoted_content_square", None;
-  "not_in", None;
-  "quoted_content_slash", None;
-  "quoted_content_i_square", None;
-  "char", None;
-  "quoted_content_heredoc_double", None;
-  "quoted_content_i_curly", None;
-  "quoted_content_i_parenthesis", None;
-  "imm_tok_lbrack", None;
-  "quoted_content_i_single", None;
+  "semgrep_metavariable", None;
+  "semgrep_ellipsis", None;
+  "pat_cf9c6c3", None;
+  "quoted_content_i_bar", None;
+  "quoted_content_double", None;
   "quoted_content_single", None;
-  "quoted_content_i_heredoc_double", None;
-  "escape_sequence", None;
+  "nil", None;
+  "quoted_content_parenthesis", None;
+  "quoted_content_i_single", None;
+  "char", None;
+  "quoted_content_curly", None;
   "quoted_content_i_angle", None;
-  "quoted_content_angle", None;
-  "quoted_content_i_slash", None;
+  "quoted_content_i_heredoc_double", None;
+  "imm_tok_lbrack", None;
+  "quoted_content_i_heredoc_single", None;
+  "quoted_content_i_square", None;
+  "quoted_content_i_curly", None;
+  "escape_sequence", None;
+  "quoted_content_heredoc_double", None;
+  "quoted_atom_start", None;
+  "quoted_content_i_parenthesis", None;
   "atom_", None;
-  "newline_before_do", None;
   "terminator",
   Some (
     Alt [|
@@ -95,16 +97,6 @@ let children_regexps : (string * Run.exp option) list = [
       Repeat1 (
         Token (Name "pat_509ec78");
       );
-    |];
-  );
-  "identifier",
-  Some (
-    Alt [|
-      Alt [|
-        Token (Name "pat_cf9c6c3");
-        Token (Literal "...");
-      |];
-      Token (Name "semgrep_metavariable");
     |];
   );
   "operator_identifier",
@@ -166,6 +158,23 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal ".");
     |];
   );
+  "metavariable_keyword",
+  Some (
+    Seq [
+      Token (Name "semgrep_metavariable");
+      Token (Name "pat_5eb9c21");
+    ];
+  );
+  "identifier",
+  Some (
+    Alt [|
+      Alt [|
+        Token (Name "pat_cf9c6c3");
+        Token (Literal "...");
+      |];
+      Token (Name "semgrep_metavariable");
+    |];
+  );
   "quoted_double",
   Some (
     Seq [
@@ -177,84 +186,6 @@ let children_regexps : (string * Run.exp option) list = [
         |];
       );
       Token (Literal "\"");
-    ];
-  );
-  "quoted_curly",
-  Some (
-    Seq [
-      Token (Literal "{");
-      Repeat (
-        Alt [|
-          Token (Name "quoted_content_curly");
-          Token (Name "escape_sequence");
-        |];
-      );
-      Token (Literal "}");
-    ];
-  );
-  "quoted_heredoc_single",
-  Some (
-    Seq [
-      Token (Literal "'''");
-      Repeat (
-        Alt [|
-          Token (Name "quoted_content_heredoc_single");
-          Token (Name "escape_sequence");
-        |];
-      );
-      Token (Literal "'''");
-    ];
-  );
-  "quoted_square",
-  Some (
-    Seq [
-      Token (Literal "[");
-      Repeat (
-        Alt [|
-          Token (Name "quoted_content_square");
-          Token (Name "escape_sequence");
-        |];
-      );
-      Token (Literal "]");
-    ];
-  );
-  "quoted_single",
-  Some (
-    Seq [
-      Token (Literal "'");
-      Repeat (
-        Alt [|
-          Token (Name "quoted_content_single");
-          Token (Name "escape_sequence");
-        |];
-      );
-      Token (Literal "'");
-    ];
-  );
-  "quoted_heredoc_double",
-  Some (
-    Seq [
-      Token (Literal "\"\"\"");
-      Repeat (
-        Alt [|
-          Token (Name "quoted_content_heredoc_double");
-          Token (Name "escape_sequence");
-        |];
-      );
-      Token (Literal "\"\"\"");
-    ];
-  );
-  "quoted_slash",
-  Some (
-    Seq [
-      Token (Literal "/");
-      Repeat (
-        Alt [|
-          Token (Name "quoted_content_slash");
-          Token (Name "escape_sequence");
-        |];
-      );
-      Token (Literal "/");
     ];
   );
   "quoted_bar",
@@ -270,6 +201,58 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "|");
     ];
   );
+  "quoted_single",
+  Some (
+    Seq [
+      Token (Literal "'");
+      Repeat (
+        Alt [|
+          Token (Name "quoted_content_single");
+          Token (Name "escape_sequence");
+        |];
+      );
+      Token (Literal "'");
+    ];
+  );
+  "quoted_heredoc_single",
+  Some (
+    Seq [
+      Token (Literal "'''");
+      Repeat (
+        Alt [|
+          Token (Name "quoted_content_heredoc_single");
+          Token (Name "escape_sequence");
+        |];
+      );
+      Token (Literal "'''");
+    ];
+  );
+  "quoted_slash",
+  Some (
+    Seq [
+      Token (Literal "/");
+      Repeat (
+        Alt [|
+          Token (Name "quoted_content_slash");
+          Token (Name "escape_sequence");
+        |];
+      );
+      Token (Literal "/");
+    ];
+  );
+  "quoted_curly",
+  Some (
+    Seq [
+      Token (Literal "{");
+      Repeat (
+        Alt [|
+          Token (Name "quoted_content_curly");
+          Token (Name "escape_sequence");
+        |];
+      );
+      Token (Literal "}");
+    ];
+  );
   "quoted_parenthesis",
   Some (
     Seq [
@@ -283,6 +266,19 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal ")");
     ];
   );
+  "quoted_square",
+  Some (
+    Seq [
+      Token (Literal "[");
+      Repeat (
+        Alt [|
+          Token (Name "quoted_content_square");
+          Token (Name "escape_sequence");
+        |];
+      );
+      Token (Literal "]");
+    ];
+  );
   "quoted_angle",
   Some (
     Seq [
@@ -294,6 +290,19 @@ let children_regexps : (string * Run.exp option) list = [
         |];
       );
       Token (Literal ">");
+    ];
+  );
+  "quoted_heredoc_double",
+  Some (
+    Seq [
+      Token (Literal "\"\"\"");
+      Repeat (
+        Alt [|
+          Token (Name "quoted_content_heredoc_double");
+          Token (Name "escape_sequence");
+        |];
+      );
+      Token (Literal "\"\"\"");
     ];
   );
   "access_call",
@@ -962,6 +971,7 @@ let children_regexps : (string * Run.exp option) list = [
     Alt [|
       Token (Name "keyword_");
       Token (Name "quoted_keyword");
+      Token (Name "metavariable_keyword");
     |];
   );
   "keywords",
@@ -1059,7 +1069,7 @@ let children_regexps : (string * Run.exp option) list = [
         Token (Name "keyword");
         Token (Name "expression");
       ];
-      Token (Literal "...");
+      Token (Name "semgrep_ellipsis");
     |];
   );
   "quoted_atom",
@@ -1544,8 +1554,17 @@ let children_regexps : (string * Run.exp option) list = [
   );
 ]
 
+let trans_quoted_content_square ((kind, body) : mt) : CST.quoted_content_square =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
 
-let trans_pat_cf9c6c3 ((kind, body) : mt) : CST.pat_cf9c6c3 =
+let trans_pat_509ec78 ((kind, body) : mt) : CST.pat_509ec78 =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_quoted_content_slash ((kind, body) : mt) : CST.quoted_content_slash =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -1566,11 +1585,6 @@ let trans_boolean ((kind, body) : mt) : CST.boolean =
       )
   | Leaf _ -> assert false
 
-let trans_quoted_content_bar ((kind, body) : mt) : CST.quoted_content_bar =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
-
 let trans_imm_tok_pat_5eb9c21 ((kind, body) : mt) : CST.imm_tok_pat_5eb9c21 =
   match body with
   | Leaf v -> v
@@ -1581,7 +1595,7 @@ let trans_imm_tok_pat_8f9e87e ((kind, body) : mt) : CST.imm_tok_pat_8f9e87e =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_quoted_content_curly ((kind, body) : mt) : CST.quoted_content_curly =
+let trans_quoted_content_angle ((kind, body) : mt) : CST.quoted_content_angle =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -1596,12 +1610,17 @@ let trans_float_ ((kind, body) : mt) : CST.float_ =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_quoted_content_parenthesis ((kind, body) : mt) : CST.quoted_content_parenthesis =
+let trans_quoted_content_i_slash ((kind, body) : mt) : CST.quoted_content_i_slash =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
 
 let trans_alias ((kind, body) : mt) : CST.alias =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_not_in ((kind, body) : mt) : CST.not_in =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -1616,22 +1635,17 @@ let trans_integer ((kind, body) : mt) : CST.integer =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_pat_509ec78 ((kind, body) : mt) : CST.pat_509ec78 =
+let trans_newline_before_do ((kind, body) : mt) : CST.newline_before_do =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_nil ((kind, body) : mt) : CST.nil =
+let trans_quoted_content_heredoc_single ((kind, body) : mt) : CST.quoted_content_heredoc_single =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_quoted_content_i_bar ((kind, body) : mt) : CST.quoted_content_i_bar =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
-
-let trans_semgrep_metavariable ((kind, body) : mt) : CST.semgrep_metavariable =
+let trans_pat_5eb9c21 ((kind, body) : mt) : CST.pat_5eb9c21 =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -1647,7 +1661,7 @@ let trans_imm_tok_pat_562b724 ((kind, body) : mt) : CST.imm_tok_pat_562b724 =
   | Children _ -> assert false
 
 
-let trans_quoted_content_double ((kind, body) : mt) : CST.quoted_content_double =
+let trans_quoted_content_bar ((kind, body) : mt) : CST.quoted_content_bar =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -1657,73 +1671,33 @@ let trans_keyword_ ((kind, body) : mt) : CST.keyword_ =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_quoted_content_i_heredoc_single ((kind, body) : mt) : CST.quoted_content_i_heredoc_single =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
-
-
-let trans_quoted_atom_start ((kind, body) : mt) : CST.quoted_atom_start =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
-
 let trans_quoted_content_i_double ((kind, body) : mt) : CST.quoted_content_i_double =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_quoted_content_heredoc_single ((kind, body) : mt) : CST.quoted_content_heredoc_single =
+let trans_semgrep_metavariable ((kind, body) : mt) : CST.semgrep_metavariable =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_quoted_content_square ((kind, body) : mt) : CST.quoted_content_square =
+let trans_semgrep_ellipsis ((kind, body) : mt) : CST.semgrep_ellipsis =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_not_in ((kind, body) : mt) : CST.not_in =
+
+let trans_pat_cf9c6c3 ((kind, body) : mt) : CST.pat_cf9c6c3 =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_quoted_content_slash ((kind, body) : mt) : CST.quoted_content_slash =
+let trans_quoted_content_i_bar ((kind, body) : mt) : CST.quoted_content_i_bar =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_quoted_content_i_square ((kind, body) : mt) : CST.quoted_content_i_square =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
-
-let trans_char ((kind, body) : mt) : CST.char =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
-
-let trans_quoted_content_heredoc_double ((kind, body) : mt) : CST.quoted_content_heredoc_double =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
-
-let trans_quoted_content_i_curly ((kind, body) : mt) : CST.quoted_content_i_curly =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
-
-let trans_quoted_content_i_parenthesis ((kind, body) : mt) : CST.quoted_content_i_parenthesis =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
-
-let trans_imm_tok_lbrack ((kind, body) : mt) : CST.imm_tok_lbrack =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
-
-let trans_quoted_content_i_single ((kind, body) : mt) : CST.quoted_content_i_single =
+let trans_quoted_content_double ((kind, body) : mt) : CST.quoted_content_double =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -1733,12 +1707,27 @@ let trans_quoted_content_single ((kind, body) : mt) : CST.quoted_content_single 
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_quoted_content_i_heredoc_double ((kind, body) : mt) : CST.quoted_content_i_heredoc_double =
+let trans_nil ((kind, body) : mt) : CST.nil =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_escape_sequence ((kind, body) : mt) : CST.escape_sequence =
+let trans_quoted_content_parenthesis ((kind, body) : mt) : CST.quoted_content_parenthesis =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_quoted_content_i_single ((kind, body) : mt) : CST.quoted_content_i_single =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_char ((kind, body) : mt) : CST.char =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_quoted_content_curly ((kind, body) : mt) : CST.quoted_content_curly =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -1748,12 +1737,47 @@ let trans_quoted_content_i_angle ((kind, body) : mt) : CST.quoted_content_i_angl
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_quoted_content_angle ((kind, body) : mt) : CST.quoted_content_angle =
+let trans_quoted_content_i_heredoc_double ((kind, body) : mt) : CST.quoted_content_i_heredoc_double =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_quoted_content_i_slash ((kind, body) : mt) : CST.quoted_content_i_slash =
+let trans_imm_tok_lbrack ((kind, body) : mt) : CST.imm_tok_lbrack =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_quoted_content_i_heredoc_single ((kind, body) : mt) : CST.quoted_content_i_heredoc_single =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_quoted_content_i_square ((kind, body) : mt) : CST.quoted_content_i_square =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_quoted_content_i_curly ((kind, body) : mt) : CST.quoted_content_i_curly =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_escape_sequence ((kind, body) : mt) : CST.escape_sequence =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_quoted_content_heredoc_double ((kind, body) : mt) : CST.quoted_content_heredoc_double =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_quoted_atom_start ((kind, body) : mt) : CST.quoted_atom_start =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_quoted_content_i_parenthesis ((kind, body) : mt) : CST.quoted_content_i_parenthesis =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -1763,10 +1787,6 @@ let trans_atom_ ((kind, body) : mt) : CST.atom_ =
   | Leaf v -> v
   | Children _ -> assert false
 
-let trans_newline_before_do ((kind, body) : mt) : CST.newline_before_do =
-  match body with
-  | Leaf v -> v
-  | Children _ -> assert false
 
 let trans_terminator ((kind, body) : mt) : CST.terminator =
   match body with
@@ -1791,32 +1811,6 @@ let trans_terminator ((kind, body) : mt) : CST.terminator =
             Run.repeat1
               (fun v -> trans_pat_509ec78 (Run.matcher_token v))
               v
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
-let trans_identifier ((kind, body) : mt) : CST.identifier =
-  match body with
-  | Children v ->
-      (match v with
-      | Alt (0, v) ->
-          `Choice_pat_cf9c6c3 (
-            (match v with
-            | Alt (0, v) ->
-                `Pat_cf9c6c3 (
-                  trans_pat_cf9c6c3 (Run.matcher_token v)
-                )
-            | Alt (1, v) ->
-                `DOTDOTDOT (
-                  Run.trans_token (Run.matcher_token v)
-                )
-            | _ -> assert false
-            )
-          )
-      | Alt (1, v) ->
-          `Semg_meta (
-            trans_semgrep_metavariable (Run.matcher_token v)
           )
       | _ -> assert false
       )
@@ -2044,6 +2038,45 @@ let trans_operator_identifier ((kind, body) : mt) : CST.operator_identifier =
       )
   | Leaf _ -> assert false
 
+let trans_metavariable_keyword ((kind, body) : mt) : CST.metavariable_keyword =
+  match body with
+  | Children v ->
+      (match v with
+      | Seq [v0; v1] ->
+          (
+            trans_semgrep_metavariable (Run.matcher_token v0),
+            trans_pat_5eb9c21 (Run.matcher_token v1)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
+let trans_identifier ((kind, body) : mt) : CST.identifier =
+  match body with
+  | Children v ->
+      (match v with
+      | Alt (0, v) ->
+          `Choice_pat_cf9c6c3 (
+            (match v with
+            | Alt (0, v) ->
+                `Pat_cf9c6c3 (
+                  trans_pat_cf9c6c3 (Run.matcher_token v)
+                )
+            | Alt (1, v) ->
+                `DOTDOTDOT (
+                  Run.trans_token (Run.matcher_token v)
+                )
+            | _ -> assert false
+            )
+          )
+      | Alt (1, v) ->
+          `Semg_meta (
+            trans_semgrep_metavariable (Run.matcher_token v)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
 let trans_quoted_double ((kind, body) : mt) : CST.quoted_double =
   match body with
   | Children v ->
@@ -2057,180 +2090,6 @@ let trans_quoted_double ((kind, body) : mt) : CST.quoted_double =
                 | Alt (0, v) ->
                     `Quoted_content_double (
                       trans_quoted_content_double (Run.matcher_token v)
-                    )
-                | Alt (1, v) ->
-                    `Esc_seq (
-                      trans_escape_sequence (Run.matcher_token v)
-                    )
-                | _ -> assert false
-                )
-              )
-              v1
-            ,
-            Run.trans_token (Run.matcher_token v2)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
-let trans_quoted_curly ((kind, body) : mt) : CST.quoted_curly =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            Run.repeat
-              (fun v ->
-                (match v with
-                | Alt (0, v) ->
-                    `Quoted_content_curl (
-                      trans_quoted_content_curly (Run.matcher_token v)
-                    )
-                | Alt (1, v) ->
-                    `Esc_seq (
-                      trans_escape_sequence (Run.matcher_token v)
-                    )
-                | _ -> assert false
-                )
-              )
-              v1
-            ,
-            Run.trans_token (Run.matcher_token v2)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
-let trans_quoted_heredoc_single ((kind, body) : mt) : CST.quoted_heredoc_single =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            Run.repeat
-              (fun v ->
-                (match v with
-                | Alt (0, v) ->
-                    `Quoted_content_here_single (
-                      trans_quoted_content_heredoc_single (Run.matcher_token v)
-                    )
-                | Alt (1, v) ->
-                    `Esc_seq (
-                      trans_escape_sequence (Run.matcher_token v)
-                    )
-                | _ -> assert false
-                )
-              )
-              v1
-            ,
-            Run.trans_token (Run.matcher_token v2)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
-let trans_quoted_square ((kind, body) : mt) : CST.quoted_square =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            Run.repeat
-              (fun v ->
-                (match v with
-                | Alt (0, v) ->
-                    `Quoted_content_square (
-                      trans_quoted_content_square (Run.matcher_token v)
-                    )
-                | Alt (1, v) ->
-                    `Esc_seq (
-                      trans_escape_sequence (Run.matcher_token v)
-                    )
-                | _ -> assert false
-                )
-              )
-              v1
-            ,
-            Run.trans_token (Run.matcher_token v2)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
-let trans_quoted_single ((kind, body) : mt) : CST.quoted_single =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            Run.repeat
-              (fun v ->
-                (match v with
-                | Alt (0, v) ->
-                    `Quoted_content_single (
-                      trans_quoted_content_single (Run.matcher_token v)
-                    )
-                | Alt (1, v) ->
-                    `Esc_seq (
-                      trans_escape_sequence (Run.matcher_token v)
-                    )
-                | _ -> assert false
-                )
-              )
-              v1
-            ,
-            Run.trans_token (Run.matcher_token v2)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
-let trans_quoted_heredoc_double ((kind, body) : mt) : CST.quoted_heredoc_double =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            Run.repeat
-              (fun v ->
-                (match v with
-                | Alt (0, v) ->
-                    `Quoted_content_here_double (
-                      trans_quoted_content_heredoc_double (Run.matcher_token v)
-                    )
-                | Alt (1, v) ->
-                    `Esc_seq (
-                      trans_escape_sequence (Run.matcher_token v)
-                    )
-                | _ -> assert false
-                )
-              )
-              v1
-            ,
-            Run.trans_token (Run.matcher_token v2)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
-
-let trans_quoted_slash ((kind, body) : mt) : CST.quoted_slash =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1; v2] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            Run.repeat
-              (fun v ->
-                (match v with
-                | Alt (0, v) ->
-                    `Quoted_content_slash (
-                      trans_quoted_content_slash (Run.matcher_token v)
                     )
                 | Alt (1, v) ->
                     `Esc_seq (
@@ -2276,6 +2135,122 @@ let trans_quoted_bar ((kind, body) : mt) : CST.quoted_bar =
       )
   | Leaf _ -> assert false
 
+let trans_quoted_single ((kind, body) : mt) : CST.quoted_single =
+  match body with
+  | Children v ->
+      (match v with
+      | Seq [v0; v1; v2] ->
+          (
+            Run.trans_token (Run.matcher_token v0),
+            Run.repeat
+              (fun v ->
+                (match v with
+                | Alt (0, v) ->
+                    `Quoted_content_single (
+                      trans_quoted_content_single (Run.matcher_token v)
+                    )
+                | Alt (1, v) ->
+                    `Esc_seq (
+                      trans_escape_sequence (Run.matcher_token v)
+                    )
+                | _ -> assert false
+                )
+              )
+              v1
+            ,
+            Run.trans_token (Run.matcher_token v2)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
+let trans_quoted_heredoc_single ((kind, body) : mt) : CST.quoted_heredoc_single =
+  match body with
+  | Children v ->
+      (match v with
+      | Seq [v0; v1; v2] ->
+          (
+            Run.trans_token (Run.matcher_token v0),
+            Run.repeat
+              (fun v ->
+                (match v with
+                | Alt (0, v) ->
+                    `Quoted_content_here_single (
+                      trans_quoted_content_heredoc_single (Run.matcher_token v)
+                    )
+                | Alt (1, v) ->
+                    `Esc_seq (
+                      trans_escape_sequence (Run.matcher_token v)
+                    )
+                | _ -> assert false
+                )
+              )
+              v1
+            ,
+            Run.trans_token (Run.matcher_token v2)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
+let trans_quoted_slash ((kind, body) : mt) : CST.quoted_slash =
+  match body with
+  | Children v ->
+      (match v with
+      | Seq [v0; v1; v2] ->
+          (
+            Run.trans_token (Run.matcher_token v0),
+            Run.repeat
+              (fun v ->
+                (match v with
+                | Alt (0, v) ->
+                    `Quoted_content_slash (
+                      trans_quoted_content_slash (Run.matcher_token v)
+                    )
+                | Alt (1, v) ->
+                    `Esc_seq (
+                      trans_escape_sequence (Run.matcher_token v)
+                    )
+                | _ -> assert false
+                )
+              )
+              v1
+            ,
+            Run.trans_token (Run.matcher_token v2)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
+let trans_quoted_curly ((kind, body) : mt) : CST.quoted_curly =
+  match body with
+  | Children v ->
+      (match v with
+      | Seq [v0; v1; v2] ->
+          (
+            Run.trans_token (Run.matcher_token v0),
+            Run.repeat
+              (fun v ->
+                (match v with
+                | Alt (0, v) ->
+                    `Quoted_content_curl (
+                      trans_quoted_content_curly (Run.matcher_token v)
+                    )
+                | Alt (1, v) ->
+                    `Esc_seq (
+                      trans_escape_sequence (Run.matcher_token v)
+                    )
+                | _ -> assert false
+                )
+              )
+              v1
+            ,
+            Run.trans_token (Run.matcher_token v2)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
 let trans_quoted_parenthesis ((kind, body) : mt) : CST.quoted_parenthesis =
   match body with
   | Children v ->
@@ -2305,6 +2280,35 @@ let trans_quoted_parenthesis ((kind, body) : mt) : CST.quoted_parenthesis =
       )
   | Leaf _ -> assert false
 
+let trans_quoted_square ((kind, body) : mt) : CST.quoted_square =
+  match body with
+  | Children v ->
+      (match v with
+      | Seq [v0; v1; v2] ->
+          (
+            Run.trans_token (Run.matcher_token v0),
+            Run.repeat
+              (fun v ->
+                (match v with
+                | Alt (0, v) ->
+                    `Quoted_content_square (
+                      trans_quoted_content_square (Run.matcher_token v)
+                    )
+                | Alt (1, v) ->
+                    `Esc_seq (
+                      trans_escape_sequence (Run.matcher_token v)
+                    )
+                | _ -> assert false
+                )
+              )
+              v1
+            ,
+            Run.trans_token (Run.matcher_token v2)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
 let trans_quoted_angle ((kind, body) : mt) : CST.quoted_angle =
   match body with
   | Children v ->
@@ -2318,6 +2322,35 @@ let trans_quoted_angle ((kind, body) : mt) : CST.quoted_angle =
                 | Alt (0, v) ->
                     `Quoted_content_angle (
                       trans_quoted_content_angle (Run.matcher_token v)
+                    )
+                | Alt (1, v) ->
+                    `Esc_seq (
+                      trans_escape_sequence (Run.matcher_token v)
+                    )
+                | _ -> assert false
+                )
+              )
+              v1
+            ,
+            Run.trans_token (Run.matcher_token v2)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
+let trans_quoted_heredoc_double ((kind, body) : mt) : CST.quoted_heredoc_double =
+  match body with
+  | Children v ->
+      (match v with
+      | Seq [v0; v1; v2] ->
+          (
+            Run.trans_token (Run.matcher_token v0),
+            Run.repeat
+              (fun v ->
+                (match v with
+                | Alt (0, v) ->
+                    `Quoted_content_here_double (
+                      trans_quoted_content_heredoc_double (Run.matcher_token v)
                     )
                 | Alt (1, v) ->
                     `Esc_seq (
@@ -3940,6 +3973,10 @@ and trans_keyword ((kind, body) : mt) : CST.keyword =
           `Quoted_kw (
             trans_quoted_keyword (Run.matcher_token v)
           )
+      | Alt (2, v) ->
+          `Meta_kw (
+            trans_metavariable_keyword (Run.matcher_token v)
+          )
       | _ -> assert false
       )
   | Leaf _ -> assert false
@@ -4126,8 +4163,8 @@ and trans_pair ((kind, body) : mt) : CST.pair =
             )
           )
       | Alt (1, v) ->
-          `DOTDOTDOT (
-            Run.trans_token (Run.matcher_token v)
+          `Semg_ellips (
+            trans_semgrep_ellipsis (Run.matcher_token v)
           )
       | _ -> assert false
       )
