@@ -12,7 +12,7 @@ Last change in file:
 ---
 File: semgrep-grammars/src/semgrep-elixir/grammar.js
 Git repo name: ocaml-tree-sitter-semgrep
-Latest commit in repo: f30b69f429de9efb12a4d0fb20ce4e7c09af9082
+Latest commit in repo: 283a1987c70aebe77c78b4358333f77b19b229cb
 Last change in file:
-  f30b69f429de9efb12a4d0fb20ce4e7c09af9082 support atoms
+  283a1987c70aebe77c78b4358333f77b19b229cb addressed review feedback
 ---
