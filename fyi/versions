@@ -2,17 +2,45 @@ File: semgrep-grammars/src/tree-sitter-elixir/LICENSE
 Git repo name: tree-sitter-elixir
 Latest commit in repo: de3ec57591aebf451e710fc9c984cf601258baf5
 Last change in file:
-  de3ec57591aebf451e710fc9c984cf601258baf5 Add issue template
+  commit d7f4f08a8126567c26704069cf6427c36ffe7324
+  Author: Jonatan Kłosko <jonatanklosko@gmail.com>
+  Date:   Thu Sep 30 14:29:49 2021 +0200
+  
+      Add license
 ---
 File: semgrep-grammars/src/tree-sitter-elixir/grammar.js
 Git repo name: tree-sitter-elixir
 Latest commit in repo: de3ec57591aebf451e710fc9c984cf601258baf5
 Last change in file:
-  de3ec57591aebf451e710fc9c984cf601258baf5 Add issue template
+  commit 5d3f7edbc2abd364b4a5af97c003014606e13374
+  Author: Jonatan Kłosko <jonatanklosko@gmail.com>
+  Date:   Thu Oct 14 20:10:10 2021 +0200
+  
+      Make hidden scanned tokens visible as regular literals (#10)
 ---
 File: semgrep-grammars/src/semgrep-elixir/grammar.js
 Git repo name: ocaml-tree-sitter-semgrep
-Latest commit in repo: ff0cc3719fb509751168d5522d081d1a5e9db232
+Latest commit in repo: 70933949d998337f15a2663e417864c87c8714ef
 Last change in file:
-  ff0cc3719fb509751168d5522d081d1a5e9db232 elixir: support metavariable atoms
+  commit b52bcb7fcd6caecacf5146d934d45afb5ecd5dfb
+  Author: Amarin (Um) Phaosawasdi <amchiclet@users.noreply.github.com>
+  Date:   Wed Jan 31 17:46:55 2024 +0900
+  
+      elixir: support metavariable atoms (#474)
+      
+      Elixir has atoms that are pretty much identifiers that start with a colon, e.g. `:foo`.
+      
+      Metavars can match expressions, but not atoms
+      * `$ATOM` matches `:foo`
+      * `:$ATOM` doesn't parse
+      
+      This PR allows metavars as atoms so `:$ATOM` matches `:foo`.
+      
+      Also fixed some indentation in some previous code.
+      
+      Test plan: added test in https://github.com/semgrep/semgrep-proprietary/pull/1274
+      
+      ### Security
+      
+      - [x] Change has no security implications (otherwise, ping the security team)
 ---
