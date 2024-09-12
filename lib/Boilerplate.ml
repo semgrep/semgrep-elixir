@@ -2060,7 +2060,34 @@ let map_source (env : env) ((v1, v2) : CST.source) =
   in
   R.Tuple [v1; v2]
 
+let map_newline_before_binary_operator (env : env) (tok : CST.newline_before_binary_operator) =
+  (* newline_before_binary_operator *) token env tok
+
+let map_newline_before_comment (env : env) (tok : CST.newline_before_comment) =
+  (* newline_before_comment *) token env tok
+
+let map_comment (env : env) (tok : CST.comment) =
+  (* comment *) token env tok
+
 let dump_tree root =
   map_source () root
-  |> Tree_sitter_run.Raw_tree.to_string
-  |> print_string
+  |> Tree_sitter_run.Raw_tree.to_channel stdout
+
+let map_extra (env : env) (x : CST.extra) =
+  match x with
+  | Comment (_loc, x) -> ("comment", "comment", map_comment env x)
+  | Newline_before_comment (_loc, x) -> ("newline_before_comment", "newline_before_comment", map_newline_before_comment env x)
+  | Newline_before_binary_operator (_loc, x) -> ("newline_before_binary_operator", "newline_before_binary_operator", map_newline_before_binary_operator env x)
+
+let dump_extras (extras : CST.extras) =
+  List.iter (fun extra ->
+    let ts_rule_name, ocaml_type_name, raw_tree = map_extra () extra in
+    let details =
+      if ocaml_type_name <> ts_rule_name then
+        Printf.sprintf " (OCaml type '%s')" ocaml_type_name
+      else
+        ""
+    in
+    Printf.printf "%s%s:\n" ts_rule_name details;
+    Tree_sitter_run.Raw_tree.to_channel stdout raw_tree
+  ) extras
