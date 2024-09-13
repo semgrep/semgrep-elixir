@@ -1061,10 +1061,10 @@ type stab_clause_arguments_without_parentheses_with_guard (* inlined *) = (
   * expression
 )
 
-type extra = 
-    Comment of Loc.t * comment
-  | Newline_before_comment of Loc.t * newline_before_comment
-  | Newline_before_binary_operator of Loc.t * newline_before_binary_operator
-
+type extra = [
+    `Comment of Loc.t * comment
+  | `Newline_before_comment of Loc.t * newline_before_comment
+  | `Newline_before_binary_operator of Loc.t * newline_before_binary_operator
+]
 
 type extras = extra list

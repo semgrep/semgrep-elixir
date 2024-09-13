@@ -2075,9 +2075,9 @@ let dump_tree root =
 
 let map_extra (env : env) (x : CST.extra) =
   match x with
-  | Comment (_loc, x) -> ("comment", "comment", map_comment env x)
-  | Newline_before_comment (_loc, x) -> ("newline_before_comment", "newline_before_comment", map_newline_before_comment env x)
-  | Newline_before_binary_operator (_loc, x) -> ("newline_before_binary_operator", "newline_before_binary_operator", map_newline_before_binary_operator env x)
+  | `Comment (_loc, x) -> ("comment", "comment", map_comment env x)
+  | `Newline_before_comment (_loc, x) -> ("newline_before_comment", "newline_before_comment", map_newline_before_comment env x)
+  | `Newline_before_binary_operator (_loc, x) -> ("newline_before_binary_operator", "newline_before_binary_operator", map_newline_before_binary_operator env x)
 
 let dump_extras (extras : CST.extras) =
   List.iter (fun extra ->
