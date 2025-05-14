@@ -1,26 +1,26 @@
 File: semgrep-grammars/src/tree-sitter-elixir/LICENSE
 Git repo name: tree-sitter-elixir
-Latest commit in repo: de3ec57591aebf451e710fc9c984cf601258baf5
+Latest commit in repo: b848e63e9f2a68accff0332392f07582c046295a
 Last change in file:
-  commit de3ec57591aebf451e710fc9c984cf601258baf5
+  commit d7f4f08a8126567c26704069cf6427c36ffe7324
   Author: Jonatan Kłosko <jonatanklosko@gmail.com>
-  Date:   Fri Oct 22 18:07:49 2021 +0200
+  Date:   Thu Sep 30 14:29:49 2021 +0200
   
-      Add issue template
+      Add license
 ---
 File: semgrep-grammars/src/tree-sitter-elixir/grammar.js
 Git repo name: tree-sitter-elixir
-Latest commit in repo: de3ec57591aebf451e710fc9c984cf601258baf5
+Latest commit in repo: b848e63e9f2a68accff0332392f07582c046295a
 Last change in file:
-  commit de3ec57591aebf451e710fc9c984cf601258baf5
+  commit 7ec4b5a3be0c646f48c5be95dab3222c75dd4b03
   Author: Jonatan Kłosko <jonatanklosko@gmail.com>
-  Date:   Fri Oct 22 18:07:49 2021 +0200
+  Date:   Mon Dec 9 22:44:58 2024 +0800
   
-      Add issue template
+      Format with commas
 ---
 File: semgrep-grammars/src/semgrep-elixir/grammar.js
 Git repo name: ocaml-tree-sitter-semgrep
-Latest commit in repo: 091f5438fc0c15b80217f00e5b94ec0e55517383
+Latest commit in repo: b9665cd85a2537da15cdc86f81b83722bc14af67
 Last change in file:
   commit b52bcb7fcd6caecacf5146d934d45afb5ecd5dfb
   Author: Amarin (Um) Phaosawasdi <amchiclet@users.noreply.github.com>

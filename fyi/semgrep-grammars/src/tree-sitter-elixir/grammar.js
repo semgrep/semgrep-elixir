@@ -16,6 +16,7 @@ const PREC = {
   XOR_OP: 140,
   TERNARY_OP: 150,
   CONCAT_OPS: 160,
+  RANGE_OP: 160,
   ADD_OPS: 170,
   MULT_OPS: 180,
   POWER_OP: 190,
@@ -33,13 +34,13 @@ const COMP_OPS = ["==", "!=", "=~", "===", "!=="];
 const REL_OPS = ["<", ">", "<=", ">="];
 const ARROW_OPS = ["|>", "<<<", ">>>", "<<~", "~>>", "<~", "~>", "<~>", "<|>"];
 const IN_OPS = ["in", "not in"];
-const CONCAT_OPS = ["++", "--", "+++", "---", "..", "<>"];
+const CONCAT_OPS = ["++", "--", "+++", "---", "<>"];
 const ADD_OPS = ["+", "-"];
 const MULT_OPS = ["*", "/"];
 const UNARY_OPS = ["+", "-", "!", "^", "~~~", "not"];
 
 const ALL_OPS = [
-  ["->", "when", "::", "|", "=>", "&", "=", "^^^", "//", "**", ".", "@"],
+  ["->", "when", "::", "|", "=>", "&", "=", "^^^", "//", "..", "**", ".", "@"],
   IN_MATCH_OPS,
   OR_OPS,
   AND_OPS,
@@ -55,7 +56,7 @@ const ALL_OPS = [
 
 // Ignore word literals and "=>" which is not a valid atom
 const ATOM_OPERATOR_LITERALS = ALL_OPS.filter(
-  (operator) => !/[a-z]/.test(operator) && operator !== "=>"
+  (operator) => !/[a-z]/.test(operator) && operator !== "=>",
 );
 
 const ATOM_SPECIAL_LITERALS = ["...", "%{}", "{}", "%", "<<>>", "..//"];
@@ -171,7 +172,7 @@ module.exports = grammar({
     //   * operator identifier in `(-> / 2)`
     [$.operator_identifier, $.stab_clause],
 
-    // Given `& /`, ampersand can be either:
+    // Given `& • /`, ampersand can be either:
     //   * capture operator in `& / / 2`
     //   * operator identifier in `& / 1`
     [$.unary_operator, $.operator_identifier],
@@ -187,8 +188,8 @@ module.exports = grammar({
       seq(
         optional($._terminator),
         optional(
-          seq(sep1($._expression, $._terminator), optional($._terminator))
-        )
+          seq(sep1($._expression, $._terminator), optional($._terminator)),
+        ),
       ),
 
     _terminator: ($) =>
@@ -213,12 +214,13 @@ module.exports = grammar({
         $.tuple,
         $.bitstring,
         $.map,
+        $._nullary_operator,
         $.unary_operator,
         $.binary_operator,
         $.dot,
         $.call,
         $.access_call,
-        $.anonymous_function
+        $.anonymous_function,
       ),
 
     block: ($) =>
@@ -230,18 +232,18 @@ module.exports = grammar({
             sep1(choice($.stab_clause), $._terminator),
             seq(
               sep1(choice($._expression), $._terminator),
-              optional($._terminator)
-            )
-          )
+              optional($._terminator),
+            ),
+          ),
         ),
-        ")"
+        ")",
       ),
 
     identifier: ($) =>
       choice(
         // See Ref 6. in the docs
         /[_\p{Ll}\p{Lm}\p{Lo}\p{Nl}\u1885\u1886\u2118\u212E\u309B\u309C][\p{ID_Continue}]*[?!]?/u,
-        "..."
+        "...",
       ),
 
     alias: ($) => token(sep1(/[A-Z][_a-zA-Z0-9]*/, /\s*\.\s*/)),
@@ -265,15 +267,15 @@ module.exports = grammar({
           choice(
             ATOM_WORD_LITERAL,
             ...ATOM_OPERATOR_LITERALS,
-            ...ATOM_SPECIAL_LITERALS
-          )
-        )
+            ...ATOM_SPECIAL_LITERALS,
+          ),
+        ),
       ),
 
     quoted_atom: ($) =>
       seq(
         alias($._quoted_atom_start, ":"),
-        choice($._quoted_i_double, $._quoted_i_single)
+        choice($._quoted_i_double, $._quoted_i_single),
       ),
 
     // Defines $._quoted_content_i_{name} and $._quoted_content_{name} rules,
@@ -293,7 +295,7 @@ module.exports = grammar({
 
     charlist: ($) => choice($._quoted_i_single, $._quoted_i_heredoc_single),
 
-    interpolation: ($) => seq("#{", $._expression, "}"),
+    interpolation: ($) => seq("#{", optional($._expression), "}"),
 
     escape_sequence: ($) =>
       token(
@@ -304,12 +306,12 @@ module.exports = grammar({
             /[^ux]/,
             // Hex byte
             /x[0-9a-fA-F]{1,2}/,
-            /x{[0-9a-fA-F]+}/,
+            /x\{[0-9a-fA-F]+\}/,
             // Unicode code point
-            /u{[0-9a-fA-F]+}/,
-            /u[0-9a-fA-F]{4}/
-          )
-        )
+            /u\{[0-9a-fA-F]+\}/,
+            /u[0-9a-fA-F]{4}/,
+          ),
+        ),
       ),
 
     sigil: ($) =>
@@ -328,11 +330,11 @@ module.exports = grammar({
               $._quoted_i_square,
               $._quoted_i_angle,
               $._quoted_i_bar,
-              $._quoted_i_slash
-            )
+              $._quoted_i_slash,
+            ),
           ),
           seq(
-            alias(token.immediate(/[A-Z]/), $.sigil_name),
+            alias(token.immediate(/[A-Z][A-Z0-9]*/), $.sigil_name),
             choice(
               $._quoted_double,
               $._quoted_single,
@@ -343,11 +345,11 @@ module.exports = grammar({
               $._quoted_square,
               $._quoted_angle,
               $._quoted_bar,
-              $._quoted_slash
-            )
-          )
+              $._quoted_slash,
+            ),
+          ),
         ),
-        optional(alias(token.immediate(/[a-zA-Z0-9]+/), $.sigil_modifiers))
+        optional(alias(token.immediate(/[a-zA-Z0-9]+/), $.sigil_modifiers)),
       ),
 
     keywords: ($) =>
@@ -369,16 +371,16 @@ module.exports = grammar({
           choice(
             ATOM_WORD_LITERAL,
             ...ATOM_OPERATOR_LITERALS.filter((op) => op !== "::"),
-            ...ATOM_SPECIAL_LITERALS
+            ...ATOM_SPECIAL_LITERALS,
           ),
-          /:\s/
-        )
+          /:\s/,
+        ),
       ),
 
     quoted_keyword: ($) =>
       seq(
         choice($._quoted_i_double, $._quoted_i_single),
-        token.immediate(/:\s/)
+        token.immediate(/:\s/),
       ),
 
     list: ($) => seq("[", optional($._items_with_trailing_separator), "]"),
@@ -397,8 +399,8 @@ module.exports = grammar({
           optional($.struct),
           "{",
           optional(alias($._items_with_trailing_separator, $.map_content)),
-          "}"
-        )
+          "}",
+        ),
       ),
 
     struct: ($) =>
@@ -411,8 +413,8 @@ module.exports = grammar({
           $.identifier,
           $.unary_operator,
           $.dot,
-          alias($._call_with_parentheses, $.call)
-        )
+          alias($._call_with_parentheses, $.call),
+        ),
       ),
 
     _items_with_trailing_separator: ($) =>
@@ -421,10 +423,15 @@ module.exports = grammar({
           seq(sep1($._expression, ","), optional(",")),
           seq(
             optional(seq(sep1($._expression, ","), ",")),
-            alias($._keywords_with_trailing_separator, $.keywords)
-          )
-        )
+            alias($._keywords_with_trailing_separator, $.keywords),
+          ),
+        ),
       ),
+
+    _nullary_operator: ($) =>
+      // Nullary operators don't have any child nodes, so we reuse the
+      // operator_identifier node
+      alias(prec(PREC.RANGE_OP, ".."), $.operator_identifier),
 
     unary_operator: ($) =>
       choice(
@@ -432,7 +439,7 @@ module.exports = grammar({
         unaryOp($, prec, PREC.UNARY_OPS, choice(...UNARY_OPS)),
         unaryOp($, prec, PREC.AT_OP, "@"),
         // Capture operand like &1 is a special case with higher precedence
-        unaryOp($, prec, PREC.CAPTURE_OPERAND, "&", $.integer)
+        unaryOp($, prec, PREC.CAPTURE_OPERAND, "&", $.integer),
       ),
 
     _capture_expression: ($) =>
@@ -441,7 +448,7 @@ module.exports = grammar({
         // so we have an explicit sequence with the parentheses and higher
         // precedence
         prec(1, seq("(", $._expression, ")")),
-        $._expression
+        $._expression,
       ),
 
     binary_operator: ($) =>
@@ -453,7 +460,7 @@ module.exports = grammar({
           PREC.WHEN_OP,
           "when",
           $._expression,
-          choice($._expression, $.keywords)
+          choice($._expression, $.keywords),
         ),
         binaryOp($, prec.right, PREC.TYPE_OP, "::"),
         binaryOp(
@@ -462,7 +469,7 @@ module.exports = grammar({
           PREC.BAR_OP,
           "|",
           $._expression,
-          choice($._expression, $.keywords)
+          choice($._expression, $.keywords),
         ),
         binaryOp($, prec.right, PREC.ASSOC_OP, "=>"),
         binaryOp($, prec.right, PREC.MATCH_OP, "="),
@@ -475,11 +482,12 @@ module.exports = grammar({
           $,
           prec.left,
           PREC.IN_OPS,
-          choice("in", alias($._not_in, "not in"))
+          choice("in", alias($._not_in, "not in")),
         ),
         binaryOp($, prec.left, PREC.XOR_OP, "^^^"),
         binaryOp($, prec.right, PREC.TERNARY_OP, "//"),
         binaryOp($, prec.right, PREC.CONCAT_OPS, choice(...CONCAT_OPS)),
+        binaryOp($, prec.right, PREC.RANGE_OP, ".."),
         binaryOp($, prec.left, PREC.ADD_OPS, choice(...ADD_OPS)),
         binaryOp($, prec.left, PREC.MULT_OPS, choice(...MULT_OPS)),
         binaryOp($, prec.left, PREC.POWER_OP, "**"),
@@ -490,8 +498,8 @@ module.exports = grammar({
           PREC.MULT_OPS,
           "/",
           $.operator_identifier,
-          $.integer
-        )
+          $.integer,
+        ),
       ),
 
     operator_identifier: ($) =>
@@ -522,12 +530,15 @@ module.exports = grammar({
         ...ARROW_OPS,
         "in",
         alias($._not_in, "not in"),
-        "^^",
+        "^^^",
         ...CONCAT_OPS,
+        // The range operator has both a binary and a nullary version.
+        // The nullary version is already parsed as operator_identifier,
+        // so it covers this case
+        // ".."
         ...MULT_OPS,
         "**",
         "->",
-        "."
       ),
 
     dot: ($) =>
@@ -536,8 +547,8 @@ module.exports = grammar({
         seq(
           field("left", $._expression),
           field("operator", "."),
-          field("right", choice($.alias, $.tuple))
-        )
+          field("right", choice($.alias, $.tuple)),
+        ),
       ),
 
     call: ($) => choice($._call_without_parentheses, $._call_with_parentheses),
@@ -546,7 +557,7 @@ module.exports = grammar({
       choice(
         $._local_call_without_parentheses,
         $._local_call_just_do_block,
-        $._remote_call_without_parentheses
+        $._remote_call_without_parentheses,
       ),
 
     _call_with_parentheses: ($) =>
@@ -554,7 +565,7 @@ module.exports = grammar({
         $._local_call_with_parentheses,
         $._remote_call_with_parentheses,
         $._anonymous_call,
-        $._double_call
+        $._double_call,
       ),
 
     // Note, calls have left precedence, so that `do end` block sticks to
@@ -565,8 +576,8 @@ module.exports = grammar({
         seq(
           field("target", $.identifier),
           alias($._call_arguments_without_parentheses, $.arguments),
-          optional(seq(optional($._newline_before_do), $.do_block))
-        )
+          optional(seq(optional($._newline_before_do), $.do_block)),
+        ),
       ),
 
     _local_call_with_parentheses: ($) =>
@@ -574,8 +585,8 @@ module.exports = grammar({
         seq(
           field("target", $.identifier),
           alias($._call_arguments_with_parentheses_immediate, $.arguments),
-          optional(seq(optional($._newline_before_do), $.do_block))
-        )
+          optional(seq(optional($._newline_before_do), $.do_block)),
+        ),
       ),
 
     _local_call_just_do_block: ($) =>
@@ -587,8 +598,8 @@ module.exports = grammar({
         seq(
           field("target", alias($._remote_dot, $.dot)),
           optional(alias($._call_arguments_without_parentheses, $.arguments)),
-          optional(seq(optional($._newline_before_do), $.do_block))
-        )
+          optional(seq(optional($._newline_before_do), $.do_block)),
+        ),
       ),
 
     _remote_call_with_parentheses: ($) =>
@@ -596,8 +607,8 @@ module.exports = grammar({
         seq(
           field("target", alias($._remote_dot, $.dot)),
           alias($._call_arguments_with_parentheses_immediate, $.arguments),
-          optional(seq(optional($._newline_before_do), $.do_block))
-        )
+          optional(seq(optional($._newline_before_do), $.do_block)),
+        ),
       ),
 
     _remote_dot: ($) =>
@@ -613,22 +624,22 @@ module.exports = grammar({
               alias(choice(...RESERVED_WORD_TOKENS), $.identifier),
               $.operator_identifier,
               alias($._quoted_i_double, $.string),
-              alias($._quoted_i_single, $.charlist)
-            )
-          )
-        )
+              alias($._quoted_i_single, $.charlist),
+            ),
+          ),
+        ),
       ),
 
     _anonymous_call: ($) =>
       seq(
         field("target", alias($._anonymous_dot, $.dot)),
-        alias($._call_arguments_with_parentheses, $.arguments)
+        alias($._call_arguments_with_parentheses, $.arguments),
       ),
 
     _anonymous_dot: ($) =>
       prec(
         PREC.DOT_OP,
-        seq(field("left", $._expression), field("operator", "."))
+        seq(field("left", $._expression), field("operator", ".")),
       ),
 
     _double_call: ($) =>
@@ -640,14 +651,14 @@ module.exports = grammar({
               choice(
                 $._local_call_with_parentheses,
                 $._remote_call_with_parentheses,
-                $._anonymous_call
+                $._anonymous_call,
               ),
-              $.call
-            )
+              $.call,
+            ),
           ),
           alias($._call_arguments_with_parentheses, $.arguments),
-          optional(seq(optional($._newline_before_do), $.do_block))
-        )
+          optional(seq(optional($._newline_before_do), $.do_block)),
+        ),
       ),
 
     _call_arguments_with_parentheses: ($) =>
@@ -657,7 +668,7 @@ module.exports = grammar({
       seq(
         token.immediate("("),
         optional($._call_arguments_with_trailing_separator),
-        ")"
+        ")",
       ),
 
     _call_arguments_with_trailing_separator: ($) =>
@@ -665,28 +676,39 @@ module.exports = grammar({
         seq(
           sep1($._expression, ","),
           optional(
-            seq(",", alias($._keywords_with_trailing_separator, $.keywords))
-          )
+            seq(",", alias($._keywords_with_trailing_separator, $.keywords)),
+          ),
         ),
-        alias($._keywords_with_trailing_separator, $.keywords)
+        alias($._keywords_with_trailing_separator, $.keywords),
       ),
 
     _call_arguments_without_parentheses: ($) =>
-      // Right precedence, because `fun1 fun2 x, y` is `fun1(fun2(x, y))`
-      prec.right(
-        choice(
-          seq(sep1($._expression, ","), optional(seq(",", $.keywords))),
-          $.keywords
-        )
+      // In stab clauses a newline can either separate multiple body expressions
+      // or multiple stab clauses, this falls under the $.body conflict. Given a
+      // multiline stab clause with trailing identifier like `1 -> 1 \n x \n 2 -> x`,
+      // there are two matching interpretations:
+      //   * `x` as identifier and `2` as stab argument
+      //   * `x 2` call as stab argument
+      // Similarly for `Mod.fun` or `mod.fun` the newline should terminate the call.
+      // Consequently, we reject the second interpretation using dynamic precedence
+      prec.dynamic(
+        -1,
+        // Right precedence, because `fun1 fun2 x, y` is `fun1(fun2(x, y))`
+        prec.right(
+          choice(
+            seq(sep1($._expression, ","), optional(seq(",", $.keywords))),
+            $.keywords,
+          ),
+        ),
       ),
 
     do_block: ($) =>
       seq(
         callKeywordBlock($, "do"),
         repeat(
-          choice($.after_block, $.rescue_block, $.catch_block, $.else_block)
+          choice($.after_block, $.rescue_block, $.catch_block, $.else_block),
         ),
-        "end"
+        "end",
       ),
 
     after_block: ($) => callKeywordBlock($, "after"),
@@ -701,8 +723,8 @@ module.exports = grammar({
           field("target", $._expression),
           token.immediate("["),
           field("key", $._expression),
-          "]"
-        )
+          "]",
+        ),
       ),
 
     stab_clause: ($) =>
@@ -711,8 +733,8 @@ module.exports = grammar({
         seq(
           optional(field("left", $._stab_clause_left)),
           field("operator", "->"),
-          optional(field("right", $.body))
-        )
+          optional(field("right", $.body)),
+        ),
       ),
 
     _stab_clause_left: ($) =>
@@ -720,13 +742,13 @@ module.exports = grammar({
         alias($._stab_clause_arguments_with_parentheses, $.arguments),
         alias(
           $._stab_clause_arguments_with_parentheses_with_guard,
-          $.binary_operator
+          $.binary_operator,
         ),
         alias($._stab_clause_arguments_without_parentheses, $.arguments),
         alias(
           $._stab_clause_arguments_without_parentheses_with_guard,
-          $.binary_operator
-        )
+          $.binary_operator,
+        ),
       ),
 
     _stab_clause_arguments_with_parentheses: ($) =>
@@ -742,13 +764,13 @@ module.exports = grammar({
                 // discard this rule in favour of the one below. We use right precedence,
                 // because in this case we can consume expression until the next comma
                 sep1(prec.right(PREC.WHEN_OP, $._expression), ","),
-                optional(seq(",", $.keywords))
+                optional(seq(",", $.keywords)),
               ),
-              $.keywords
-            )
+              $.keywords,
+            ),
           ),
-          ")"
-        )
+          ")",
+        ),
       ),
 
     _stab_clause_arguments_without_parentheses: ($) =>
@@ -760,20 +782,20 @@ module.exports = grammar({
         choice(
           seq(
             sep1(prec(PREC.WHEN_OP, $._expression), ","),
-            optional(seq(",", $.keywords))
+            optional(seq(",", $.keywords)),
           ),
-          $.keywords
-        )
+          $.keywords,
+        ),
       ),
 
     _stab_clause_arguments_with_parentheses_with_guard: ($) =>
       seq(
         field(
           "left",
-          alias($._stab_clause_arguments_with_parentheses, $.arguments)
+          alias($._stab_clause_arguments_with_parentheses, $.arguments),
         ),
         field("operator", "when"),
-        field("right", $._expression)
+        field("right", $._expression),
       ),
 
     _stab_clause_arguments_without_parentheses_with_guard: ($) =>
@@ -786,26 +808,30 @@ module.exports = grammar({
         seq(
           field(
             "left",
-            alias($._stab_clause_arguments_without_parentheses, $.arguments)
+            alias($._stab_clause_arguments_without_parentheses, $.arguments),
           ),
           field("operator", "when"),
-          field("right", $._expression)
-        )
+          field("right", $._expression),
+        ),
       ),
 
     body: ($) =>
-      seq(
-        optional($._terminator),
-        sep1($._expression, $._terminator),
-        optional($._terminator)
+      choice(
+        $._terminator,
+        seq(
+          optional($._terminator),
+          sep1($._expression, $._terminator),
+          optional($._terminator),
+        ),
       ),
 
     anonymous_function: ($) =>
       seq(
         "fn",
         optional($._terminator),
-        sep1($.stab_clause, $._terminator),
-        "end"
+        // See Ref 8. in the docs
+        optional(sep1($.stab_clause, $._terminator)),
+        "end",
       ),
 
     // A comment may be anywhere, we give it a lower precedence,
@@ -830,9 +856,9 @@ function unaryOp($, assoc, precedence, operator, right = null) {
       seq(
         optional($._before_unary_op),
         field("operator", operator),
-        field("operand", right || $._expression)
-      )
-    )
+        field("operand", right || $._expression),
+      ),
+    ),
   );
 }
 
@@ -842,8 +868,8 @@ function binaryOp($, assoc, precedence, operator, left = null, right = null) {
     seq(
       field("left", left || $._expression),
       field("operator", operator),
-      field("right", right || $._expression)
-    )
+      field("right", right || $._expression),
+    ),
   );
 }
 
@@ -854,9 +880,12 @@ function callKeywordBlock($, start) {
     optional(
       choice(
         sep1(choice($.stab_clause), $._terminator),
-        seq(sep1(choice($._expression), $._terminator), optional($._terminator))
-      )
-    )
+        seq(
+          sep1(choice($._expression), $._terminator),
+          optional($._terminator),
+        ),
+      ),
+    ),
   );
 }
 
@@ -865,27 +894,28 @@ function defineQuoted(start, end, name) {
     [`_quoted_i_${name}`]: ($) =>
       seq(
         field("quoted_start", start),
+        optional(alias($[`_quoted_content_i_${name}`], $.quoted_content)),
         repeat(
-          choice(
-            alias($[`_quoted_content_i_${name}`], $.quoted_content),
-            $.interpolation,
-            $.escape_sequence
-          )
+          seq(
+            choice($.interpolation, $.escape_sequence),
+            optional(alias($[`_quoted_content_i_${name}`], $.quoted_content)),
+          ),
         ),
-        field("quoted_end", end)
+        field("quoted_end", end),
       ),
 
     [`_quoted_${name}`]: ($) =>
       seq(
         field("quoted_start", start),
+        optional(alias($[`_quoted_content_${name}`], $.quoted_content)),
         repeat(
-          choice(
-            alias($[`_quoted_content_${name}`], $.quoted_content),
-            // The end delimiter may always be escaped
-            $.escape_sequence
-          )
+          seq(
+            // The end delimiter may be escaped in non-interpolating strings too
+            $.escape_sequence,
+            optional(alias($[`_quoted_content_${name}`], $.quoted_content)),
+          ),
         ),
-        field("quoted_end", end)
+        field("quoted_end", end),
       ),
   };
 }
