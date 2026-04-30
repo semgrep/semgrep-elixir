@@ -79,8 +79,8 @@ let map_float_ (env : env) (tok : CST.float_) =
 let map_imm_tok_pat_0db2d54 (env : env) (tok : CST.imm_tok_pat_0db2d54) =
   (* pattern [a-z] *) token env tok
 
-let map_semgrep_metavariable (env : env) (tok : CST.semgrep_metavariable) =
-  (* semgrep_metavariable *) token env tok
+let map_semgrep_ellipsis_metavariable (env : env) (tok : CST.semgrep_ellipsis_metavariable) =
+  (* semgrep_ellipsis_metavariable *) token env tok
 
 let map_quoted_content_single (env : env) (tok : CST.quoted_content_single) =
   (* quoted_content_single *) token env tok
@@ -130,6 +130,9 @@ let map_boolean (env : env) (x : CST.boolean) =
 
 let map_quoted_content_double (env : env) (tok : CST.quoted_content_double) =
   (* quoted_content_double *) token env tok
+
+let map_semgrep_metavariable (env : env) (tok : CST.semgrep_metavariable) =
+  (* semgrep_metavariable *) token env tok
 
 let map_quoted_content_i_bar (env : env) (tok : CST.quoted_content_i_bar) =
   (* quoted_content_i_bar *) token env tok
@@ -248,23 +251,6 @@ let map_quoted_curly (env : env) ((v1, v2, v3, v4) : CST.quoted_curly) =
   in
   let v4 = (* "}" *) token env v4 in
   R.Tuple [v1; v2; v3; v4]
-
-let map_identifier (env : env) (x : CST.identifier) =
-  (match x with
-  | `Choice_pat_cf9c6c3 x -> R.Case ("Choice_pat_cf9c6c3",
-      (match x with
-      | `Pat_cf9c6c3 x -> R.Case ("Pat_cf9c6c3",
-          map_pat_cf9c6c3 env x
-        )
-      | `DOTDOTDOT tok -> R.Case ("DOTDOTDOT",
-          (* "..." *) token env tok
-        )
-      )
-    )
-  | `Semg_meta tok -> R.Case ("Semg_meta",
-      (* semgrep_metavariable *) token env tok
-    )
-  )
 
 let map_quoted_single (env : env) ((v1, v2, v3, v4) : CST.quoted_single) =
   let v1 = (* "'" *) token env v1 in
@@ -408,6 +394,23 @@ let map_quoted_double (env : env) ((v1, v2, v3, v4) : CST.quoted_double) =
   in
   let v4 = (* "\"" *) token env v4 in
   R.Tuple [v1; v2; v3; v4]
+
+let map_identifier (env : env) (x : CST.identifier) =
+  (match x with
+  | `Choice_pat_cf9c6c3 x -> R.Case ("Choice_pat_cf9c6c3",
+      (match x with
+      | `Pat_cf9c6c3 x -> R.Case ("Pat_cf9c6c3",
+          map_pat_cf9c6c3 env x
+        )
+      | `DOTDOTDOT tok -> R.Case ("DOTDOTDOT",
+          (* "..." *) token env tok
+        )
+      )
+    )
+  | `Semg_meta tok -> R.Case ("Semg_meta",
+      (* semgrep_metavariable *) token env tok
+    )
+  )
 
 let map_quoted_heredoc_single (env : env) ((v1, v2, v3, v4) : CST.quoted_heredoc_single) =
   let v1 = (* "'''" *) token env v1 in
@@ -1563,6 +1566,9 @@ and map_expression (env : env) (x : CST.expression) =
       let v3 = (* "...>" *) token env v3 in
       R.Tuple [v1; v2; v3]
     )
+  | `Semg_ellips_meta tok -> R.Case ("Semg_ellips_meta",
+      (* semgrep_ellipsis_metavariable *) token env tok
+    )
   )
 
 and map_items_with_trailing_separator (env : env) (v1 : CST.items_with_trailing_separator) =
@@ -1672,6 +1678,9 @@ and map_pair (env : env) (x : CST.pair) =
     )
   | `Semg_ellips tok -> R.Case ("Semg_ellips",
       (* "..." *) token env tok
+    )
+  | `Semg_ellips_meta tok -> R.Case ("Semg_ellips_meta",
+      (* semgrep_ellipsis_metavariable *) token env tok
     )
   )
 

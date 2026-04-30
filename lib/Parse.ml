@@ -44,7 +44,7 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "false");
     |];
   );
-  "semgrep_metavariable", None;
+  "semgrep_ellipsis_metavariable", None;
   "imm_tok_pat_8f9e87e", None;
   "imm_tok_pat_b250293", None;
   "quoted_atom_start", None;
@@ -60,6 +60,7 @@ let children_regexps : (string * Run.exp option) list = [
   "quoted_content_double", None;
   "imm_tok_lpar", None;
   "imm_tok_pat_5eb9c21", None;
+  "semgrep_metavariable", None;
   "quoted_content_slash", None;
   "keyword_", None;
   "quoted_content_i_bar", None;
@@ -87,13 +88,6 @@ let children_regexps : (string * Run.exp option) list = [
   "quoted_content_i_heredoc_double", None;
   "atom_", None;
   "newline_before_binary_operator", None;
-  "metavariable_atom",
-  Some (
-    Seq [
-      Token (Literal ":");
-      Token (Name "semgrep_metavariable");
-    ];
-  );
   "operator_identifier",
   Some (
     Alt [|
@@ -150,6 +144,13 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Literal "**");
       Token (Literal "->");
     |];
+  );
+  "metavariable_atom",
+  Some (
+    Seq [
+      Token (Literal ":");
+      Token (Name "semgrep_metavariable");
+    ];
   );
   "terminator",
   Some (
@@ -992,6 +993,7 @@ let children_regexps : (string * Run.exp option) list = [
       Token (Name "access_call");
       Token (Name "anonymous_function");
       Token (Name "deep_ellipsis");
+      Token (Name "semgrep_ellipsis_metavariable");
     |];
   );
   "interpolation",
@@ -1142,6 +1144,7 @@ let children_regexps : (string * Run.exp option) list = [
         Token (Name "expression");
       ];
       Token (Name "semgrep_ellipsis");
+      Token (Name "semgrep_ellipsis_metavariable");
     |];
   );
   "quoted_atom",
@@ -1732,7 +1735,7 @@ let trans_boolean ((kind, body) : mt) : CST.boolean =
       )
   | Leaf _ -> assert false
 
-let trans_semgrep_metavariable ((kind, body) : mt) : CST.semgrep_metavariable =
+let trans_semgrep_ellipsis_metavariable ((kind, body) : mt) : CST.semgrep_ellipsis_metavariable =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -1808,6 +1811,11 @@ let trans_imm_tok_lpar ((kind, body) : mt) : CST.imm_tok_lpar =
   | Children _ -> assert false
 
 let trans_imm_tok_pat_5eb9c21 ((kind, body) : mt) : CST.imm_tok_pat_5eb9c21 =
+  match body with
+  | Leaf v -> v
+  | Children _ -> assert false
+
+let trans_semgrep_metavariable ((kind, body) : mt) : CST.semgrep_metavariable =
   match body with
   | Leaf v -> v
   | Children _ -> assert false
@@ -1946,19 +1954,6 @@ let trans_newline_before_binary_operator ((kind, body) : mt) : CST.newline_befor
   match body with
   | Leaf v -> v
   | Children _ -> assert false
-
-let trans_metavariable_atom ((kind, body) : mt) : CST.metavariable_atom =
-  match body with
-  | Children v ->
-      (match v with
-      | Seq [v0; v1] ->
-          (
-            Run.trans_token (Run.matcher_token v0),
-            trans_semgrep_metavariable (Run.matcher_token v1)
-          )
-      | _ -> assert false
-      )
-  | Leaf _ -> assert false
 
 let trans_operator_identifier ((kind, body) : mt) : CST.operator_identifier =
   match body with
@@ -2169,6 +2164,19 @@ let trans_operator_identifier ((kind, body) : mt) : CST.operator_identifier =
       | Alt (44, v) ->
           `DASHGT (
             Run.trans_token (Run.matcher_token v)
+          )
+      | _ -> assert false
+      )
+  | Leaf _ -> assert false
+
+let trans_metavariable_atom ((kind, body) : mt) : CST.metavariable_atom =
+  match body with
+  | Children v ->
+      (match v with
+      | Seq [v0; v1] ->
+          (
+            Run.trans_token (Run.matcher_token v0),
+            trans_semgrep_metavariable (Run.matcher_token v1)
           )
       | _ -> assert false
       )
@@ -4109,6 +4117,10 @@ and trans_expression ((kind, body) : mt) : CST.expression =
           `Deep_ellips (
             trans_deep_ellipsis (Run.matcher_token v)
           )
+      | Alt (24, v) ->
+          `Semg_ellips_meta (
+            trans_semgrep_ellipsis_metavariable (Run.matcher_token v)
+          )
       | _ -> assert false
       )
   | Leaf _ -> assert false
@@ -4410,6 +4422,10 @@ and trans_pair ((kind, body) : mt) : CST.pair =
       | Alt (1, v) ->
           `Semg_ellips (
             trans_semgrep_ellipsis (Run.matcher_token v)
+          )
+      | Alt (2, v) ->
+          `Semg_ellips_meta (
+            trans_semgrep_ellipsis_metavariable (Run.matcher_token v)
           )
       | _ -> assert false
       )
