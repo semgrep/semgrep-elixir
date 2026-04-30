@@ -19,28 +19,25 @@ Last change in file:
       Format with commas
 ---
 File: semgrep-grammars/src/semgrep-elixir/grammar.js
-Git repo name: ocaml-tree-sitter-semgrep
-Latest commit in repo: b9665cd85a2537da15cdc86f81b83722bc14af67
+Git repo name: agent-a1b1f87efc493b5a7
+Latest commit in repo: 041b61e542d4bcefbb375268dc5aaaf0e98403f5
 Last change in file:
-  commit b52bcb7fcd6caecacf5146d934d45afb5ecd5dfb
-  Author: Amarin (Um) Phaosawasdi <amchiclet@users.noreply.github.com>
-  Date:   Wed Jan 31 17:46:55 2024 +0900
+  commit 041b61e542d4bcefbb375268dc5aaaf0e98403f5
+  Author: brandonspark <brandon@semgrep.com>
+  Date:   Wed Apr 29 17:28:58 2026 -0700
   
-      elixir: support metavariable atoms (#474)
+      fix(elixir): add $...VAR ellipsis-metavariable support
       
-      Elixir has atoms that are pretty much identifiers that start with a colon, e.g. `:foo`.
+      Adds a `_semgrep_ellipsis_metavariable` token (`$\.\.\.[A-Z_][A-Z_0-9]*`)
+      and wires it into `_expression` and `pair` so it parses in every position
+      where users naturally reach for it: call args, def/fn parameters, list and
+      tuple elements, do-block bodies, and keyword-argument positions. Declares
+      the resulting `_expression` vs `pair` conflict explicitly (either resolution
+      becomes ParamEllipsis in the Generic AST). Adds corpus tests covering all
+      six positions from LANG-493.
       
-      Metavars can match expressions, but not atoms
-      * `$ATOM` matches `:foo`
-      * `:$ATOM` doesn't parse
+      LANG-501 (`?`/`!` suffix on metavariables) is deferred — root cause is in
+      the upstream tree-sitter-elixir scanner.cc, not in grammar.js.
       
-      This PR allows metavars as atoms so `:$ATOM` matches `:foo`.
-      
-      Also fixed some indentation in some previous code.
-      
-      Test plan: added test in https://github.com/semgrep/semgrep-proprietary/pull/1274
-      
-      ### Security
-      
-      - [x] Change has no security implications (otherwise, ping the security team)
+      Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
 ---

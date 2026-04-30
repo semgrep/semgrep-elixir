@@ -49,7 +49,7 @@ type float_ = Token.t
 
 type imm_tok_pat_0db2d54 = Token.t (* pattern [a-z] *)
 
-type semgrep_metavariable = Token.t
+type semgrep_ellipsis_metavariable = Token.t
 
 type quoted_content_single = Token.t
 
@@ -81,6 +81,8 @@ type boolean = [
 ]
 
 type quoted_content_double = Token.t
+
+type semgrep_metavariable = Token.t
 
 type quoted_content_i_bar = Token.t
 
@@ -129,14 +131,6 @@ type quoted_curly = (
   * Token.t (* "}" *)
 )
 
-type identifier = [
-    `Choice_pat_cf9c6c3 of [
-        `Pat_cf9c6c3 of pat_cf9c6c3
-      | `DOTDOTDOT of Token.t (* "..." *)
-    ]
-  | `Semg_meta of semgrep_metavariable (*tok*)
-]
-
 type quoted_single = (
     Token.t (* "'" *)
   * quoted_content_single (*tok*) option
@@ -184,6 +178,14 @@ type quoted_double = (
       list (* zero or more *)
   * Token.t (* "\"" *)
 )
+
+type identifier = [
+    `Choice_pat_cf9c6c3 of [
+        `Pat_cf9c6c3 of pat_cf9c6c3
+      | `DOTDOTDOT of Token.t (* "..." *)
+    ]
+  | `Semg_meta of semgrep_metavariable (*tok*)
+]
 
 type quoted_heredoc_single = (
     Token.t (* "'''" *)
@@ -616,6 +618,7 @@ and expression = [
   | `Deep_ellips of (
         Token.t (* "<..." *) * expression * Token.t (* "...>" *)
     )
+  | `Semg_ellips_meta of semgrep_ellipsis_metavariable (*tok*)
 ]
 
 and items_with_trailing_separator = [
@@ -657,6 +660,7 @@ and local_call_with_parentheses = (
 and pair = [
     `Kw_exp of (keyword * expression)
   | `Semg_ellips of Token.t (* "..." *)
+  | `Semg_ellips_meta of semgrep_ellipsis_metavariable (*tok*)
 ]
 
 and quoted_i_angle = (
